@@ -1,7 +1,7 @@
 package com.agh.riceitapi.service;
 
 import com.agh.riceitapi.dto.RegisterDTO;
-import com.agh.riceitapi.exception.InternalServerErrorException;
+import com.agh.riceitapi.exception.RegisterException;
 import com.agh.riceitapi.model.Role;
 import com.agh.riceitapi.model.RoleName;
 import com.agh.riceitapi.model.User;
@@ -34,12 +34,17 @@ public class UserService {
 
     public User createUser(RegisterDTO registerDTO){
         User user = new User();
+
+        if(registerDTO.getPassword().length()<8){
+            throw new RegisterException("Password is too short!");
+        }
+
         user.setUsername(registerDTO.getUsername());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 
         Role role = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(
-                () -> new InternalServerErrorException("There is no [ROLE_USER] role"));
+                () -> new RegisterException("There is no [ROLE_USER] role"));
         user.setRoles(Collections.singleton(role));
 
         return this.userRepository.save(user);

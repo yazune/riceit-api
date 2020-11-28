@@ -6,17 +6,17 @@ import javax.validation.constraints.Size;
 
 public class RegisterDTO {
 
-    @NotBlank
-    @Size(min = 2, max = 45)
+    @NotBlank(message = "Username can not be empty.")
+    @Size(min = 2, max = 45, message = "Username should be between 2 and 45 characters.")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Email can not be empty.")
     @Email
-    @Size(max = 45)
+    @Size(max = 45, message = "Wrong email format.")
     private String email;
 
-    @NotBlank
-    @Size(min = 8, max = 45)
+    @NotBlank(message = "Password can not be empty.")
+    @Size(min = 8, max = 45, message = "Password should be between 8 and 45 characters.")
     private String password;
 
     public String getUsername() {

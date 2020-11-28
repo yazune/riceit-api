@@ -47,7 +47,7 @@ public class AuthenticationController {
         String jwt = jwtTokenProvider.generateToken(authentication);
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "authentication", (elapsedTime/Math.pow(10,9))));
         return new ResponseEntity(new TokenDTO("Bearer", jwt), HttpStatus.OK);
     }
 }

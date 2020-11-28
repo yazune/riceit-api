@@ -32,10 +32,10 @@ public class UserController {
 
        long startTime = System.nanoTime();
        if (userService.existsByUsername(registerDTO.getUsername())){
-           throw new RegisterException("register.error.usernameExists");
+           throw new RegisterException("Username ["+ registerDTO.getUsername()+"] already exists.");
        }
        if (userService.existsByEmail(registerDTO.getEmail())){
-           throw new RegisterException("register.error.emailExists");
+           throw new RegisterException("Email ["+ registerDTO.getEmail()+"] already exists.");
        }
 
        User user = this.userService.createUser(registerDTO);
