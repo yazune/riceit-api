@@ -1,59 +1,53 @@
 package com.agh.riceitapi.controller;
 
-import com.agh.riceitapi.exception.AppException;
-import com.agh.riceitapi.model.Role;
-import com.agh.riceitapi.model.RoleName;
-import com.agh.riceitapi.model.User;
-import com.agh.riceitapi.repository.RoleRepository;
-import com.agh.riceitapi.repository.UserRepository;
-import com.agh.riceitapi.request.RegisterRequest;
+import com.agh.riceitapi.dto.LoginDTO;
+import com.agh.riceitapi.dto.TokenDTO;
+import com.agh.riceitapi.security.JwtTokenProvider;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Collections;
+
+import static java.lang.String.format;
 
 @RestController
 public class AuthenticationController {
 
     @Autowired
-    UserRepository userRepository;
+    AuthenticationManager authenticationManager;
 
     @Autowired
-    RoleRepository roleRepository;
+    JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final Log log = LogFactory.getLog(getClass());
 
-    @PostMapping("/auth/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest){
-        if(userRepository.existsByUsername(registerRequest.getUsername())){
-            return new ResponseEntity("Username already in use", HttpStatus.BAD_REQUEST);
-        }
-        if(userRepository.existsByEmail(registerRequest.getEmail())){
-            return new ResponseEntity("Email already in use", HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping("/auth/login")
+    public ResponseEntity<TokenDTO> login(@Valid @RequestBody LoginDTO loginDTO){
 
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        Role role = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(
-                () -> new AppException("User role not set!"));
-        user.setRoles(Collections.singleton(role));
-        userRepository.save(user);
+        long startTime = System.nanoTime();
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.getUsernameOrEmail(),
+                        loginDTO.getPassword()
+                )
+        );
 
-        return new ResponseEntity("User registered succesfully!", HttpStatus.OK);
-    }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtTokenProvider.generateToken(authentication);
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello!";
+        long elapsedTime = System.nanoTime() - startTime;
+        log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
+        return new ResponseEntity(new TokenDTO("Bearer", jwt), HttpStatus.OK);
     }
 }

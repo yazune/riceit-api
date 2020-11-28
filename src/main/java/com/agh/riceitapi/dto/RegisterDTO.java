@@ -1,10 +1,10 @@
-package com.agh.riceitapi.request;
+package com.agh.riceitapi.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class RegisterRequest {
+public class RegisterDTO {
 
     @NotBlank
     @Size(min = 2, max = 45)
