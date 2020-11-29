@@ -2,7 +2,9 @@ package com.agh.riceitapi.controller;
 
 import com.agh.riceitapi.dto.LoginDTO;
 import com.agh.riceitapi.dto.TokenDTO;
+import com.agh.riceitapi.security.CurrentUser;
 import com.agh.riceitapi.security.JwtTokenProvider;
+import com.agh.riceitapi.security.UserPrincipal;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,5 +52,10 @@ public class AuthenticationController {
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "authentication", (elapsedTime/Math.pow(10,9))));
         return new ResponseEntity(new TokenDTO("Bearer", jwt), HttpStatus.OK);
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<CurrentUser> hello(@CurrentUser UserPrincipal currentUser){
+        return new ResponseEntity(currentUser, HttpStatus.OK);
     }
 }
