@@ -53,9 +53,4 @@ public class AuthenticationController {
         log.info(format("%s in: %.10f [s]", "authentication", (elapsedTime/Math.pow(10,9))));
         return new ResponseEntity(new TokenDTO("Bearer", jwt), HttpStatus.OK);
     }
-
-    @GetMapping("/hello")
-    public ResponseEntity<CurrentUser> hello(@CurrentUser UserPrincipal currentUser){
-        return new ResponseEntity(currentUser, HttpStatus.OK);
-    }
 }
