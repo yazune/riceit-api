@@ -31,8 +31,9 @@ public class Meal {
 
     private double fat = 0.0;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "meal_id")
+    //@OnDelete(action = OnDeleteAction.CASCADE) //TODO - check if deleting one meal deletes all foods from databases
     private List<Food> foods = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -105,5 +106,18 @@ public class Meal {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void increaseMacroByFood(Food food){
+        this.kcal += food.getKcal();
+        this.carbohydrate += food.getCarbohydrate();
+        this.fat += food.getFat();
+        this.protein += food.getProtein();
+    }
+    public void decreaseMacroByFood(Food food){
+        this.kcal -= food.getKcal();
+        this.carbohydrate -= food.getCarbohydrate();
+        this.fat -= food.getFat();
+        this.protein -= food.getProtein();
     }
 }

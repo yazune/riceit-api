@@ -1,10 +1,8 @@
 package com.agh.riceitapi.dto;
 
-public class GetFoodDTO {
+public class RemoveMealDTO {
 
     private long mealId;
-    private long foodId;
-
 
     public long getMealId() {
         return mealId;
@@ -12,13 +10,5 @@ public class GetFoodDTO {
 
     public void setMealId(long mealId) {
         this.mealId = mealId;
-    }
-
-    public long getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(long foodId) {
-        this.foodId = foodId;
     }
 }
