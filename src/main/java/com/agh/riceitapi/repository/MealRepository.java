@@ -1,6 +1,5 @@
 package com.agh.riceitapi.repository;
 
-import com.agh.riceitapi.model.Food;
 import com.agh.riceitapi.model.Meal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

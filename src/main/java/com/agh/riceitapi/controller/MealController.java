@@ -2,7 +2,6 @@ package com.agh.riceitapi.controller;
 
 import com.agh.riceitapi.dto.*;
 import com.agh.riceitapi.exception.MealServiceException;
-import com.agh.riceitapi.exception.RegisterException;
 import com.agh.riceitapi.model.Food;
 import com.agh.riceitapi.model.Meal;
 import com.agh.riceitapi.security.CurrentUser;
@@ -55,7 +54,7 @@ public class MealController {
     }
 
     @PostMapping("/meals/remove")
-    public ResponseEntity RemoveMeal(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveMealDTO removeMealDTO) throws MealServiceException{
+    public ResponseEntity<String> RemoveMeal(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveMealDTO removeMealDTO) throws MealServiceException{
         long startTime = System.nanoTime();
 
         this.mealService.removeMeal(currentUser.getId(), removeMealDTO);
@@ -67,7 +66,7 @@ public class MealController {
     }
 
     @PostMapping("/meals/addFood")
-    public ResponseEntity addFood(@CurrentUser UserPrincipal currentUser, @RequestBody AddFoodDTO addFoodDTO) throws MealServiceException{
+    public ResponseEntity<Meal> addFood(@CurrentUser UserPrincipal currentUser, @RequestBody AddFoodDTO addFoodDTO) throws MealServiceException{
         long startTime = System.nanoTime();
 
         Meal meal = this.mealService.addFood(currentUser.getId(), addFoodDTO);
@@ -79,7 +78,7 @@ public class MealController {
     }
 
     @PostMapping("/meals/removeFood")
-    public ResponseEntity removeFood(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveFoodDTO removeFoodDTO) throws MealServiceException{
+    public ResponseEntity<Meal> removeFood(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveFoodDTO removeFoodDTO) throws MealServiceException{
         long startTime = System.nanoTime();
 
         Meal meal = this.mealService.removeFood(currentUser.getId(), removeFoodDTO);
@@ -91,7 +90,7 @@ public class MealController {
     }
 
     @PostMapping("/meals/getFood")
-    public ResponseEntity getFood(@CurrentUser UserPrincipal currentUser, @RequestBody GetFoodDTO getFoodDTO) throws MealServiceException{
+    public ResponseEntity<Food> getFood(@CurrentUser UserPrincipal currentUser, @RequestBody GetFoodDTO getFoodDTO) throws MealServiceException{
         long startTime = System.nanoTime();
 
         Food food = this.mealService.getFood(currentUser.getId(), getFoodDTO);
@@ -113,7 +112,4 @@ public class MealController {
 
         return new ResponseEntity(meal, HttpStatus.OK);
     }
-
-
-
 }
