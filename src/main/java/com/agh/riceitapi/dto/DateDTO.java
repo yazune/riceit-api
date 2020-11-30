@@ -1,16 +1,18 @@
 package com.agh.riceitapi.dto;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class DateDTO {
 
-    private LocalDate date;
+    @NotBlank
+    private String date;
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
