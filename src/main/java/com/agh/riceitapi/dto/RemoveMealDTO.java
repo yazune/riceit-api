@@ -1,7 +1,10 @@
 package com.agh.riceitapi.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class RemoveMealDTO {
 
+    @NotBlank
     private long mealId;
 
     public long getMealId() {

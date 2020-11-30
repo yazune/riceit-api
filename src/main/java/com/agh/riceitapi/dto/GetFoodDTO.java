@@ -1,18 +1,11 @@
 package com.agh.riceitapi.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class GetFoodDTO {
 
-    private long mealId;
+    @NotBlank
     private long foodId;
-
-
-    public long getMealId() {
-        return mealId;
-    }
-
-    public void setMealId(long mealId) {
-        this.mealId = mealId;
-    }
 
     public long getFoodId() {
         return foodId;

@@ -1,7 +1,6 @@
 package com.agh.riceitapi.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 public class DateDTO {
 
