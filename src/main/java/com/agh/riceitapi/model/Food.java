@@ -1,5 +1,8 @@
 package com.agh.riceitapi.model;
 
+import com.agh.riceitapi.dto.FoodDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,6 +30,10 @@ public class Food {
 
     @NotNull
     private double fat;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Meal meal;
 
     public Food() {
     }
@@ -77,5 +84,21 @@ public class Food {
 
     public void setFat(double fat) {
         this.fat = fat;
+    }
+
+    public Meal getMeal() {
+        return meal;
+    }
+
+    public void setMeal(Meal meal) {
+        this.meal = meal;
+    }
+
+    public void fillWithDataFrom(FoodDTO foodDTO){
+        this.name = foodDTO.getName();
+        this.kcal = foodDTO.getKcal();
+        this.protein = foodDTO.getProtein();
+        this.fat = foodDTO.getFat();
+        this.carbohydrate = foodDTO.getCarbohydrate();
     }
 }

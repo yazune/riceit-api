@@ -36,6 +36,7 @@ public class MealService {
 
         Meal meal = new Meal();
         meal.setUser(user);
+
         LocalDate date = parseStrToLocalDate(dateDTO.getDate());
         meal.setDate(date);
 
@@ -54,73 +55,58 @@ public class MealService {
         this.mealRepository.delete(meal);
     }
 
-    public Meal addFood(long userId, AddFoodDTO foodDTO){
-        Meal meal = this.mealRepository.findByIdAndUserId(foodDTO.getMealId(), userId).orElseThrow(
-                () -> new MealServiceException("There is no meal with id: [" + foodDTO.getMealId() + "]."));
+    public Meal addFood(long userId, AddFoodDTO addFoodDTO){
+        Meal meal = this.mealRepository.findByIdAndUserId(addFoodDTO.getMealId(), userId).orElseThrow(
+                () -> new MealServiceException("There is no meal with id: [" + addFoodDTO.getMealId() + "]."));
 
         Food food = new Food();
-        food.setName(foodDTO.getName());
-        food.setKcal(foodDTO.getKcal());
-        food.setCarbohydrate(foodDTO.getCarbohydrate());
-        food.setFat(foodDTO.getFat());
-        food.setProtein(foodDTO.getProtein());
+        food.fillWithDataFrom(addFoodDTO);
 
-        meal.increaseMacroByFood(food);
-        meal.getFoods().add(food);
-
-        //this.foodRepository.save(food); <--- You don't have to use it with @OneToMany and JpaRepository
+        meal.addFood(food);
         return this.mealRepository.save(meal);
     }
 
-    // TODO - check later if it's possible to update food with no touching the Meal objects
     public Meal updateFood(long userId, UpdateFoodDTO updateFoodDTO){
-        Meal meal = this.mealRepository.findByIdAndUserId(updateFoodDTO.getMealId(), userId).orElseThrow(
-                () -> new MealServiceException("There is no meal with id: [" + updateFoodDTO.getMealId() + "]."));
-
         Food food = this.foodRepository.findById(updateFoodDTO.getFoodId()).orElseThrow(
                 () -> new MealServiceException("There is no food with id: [" + updateFoodDTO.getFoodId() + "]."));
 
-        if (!meal.getFoods().contains(food)){
-            throw new MealServiceException("The food with id: [" + food.getId() + "] doesn't belong to meal with id: [" + meal.getId() +"].");
+        Meal meal = food.getMeal();
+
+        if (meal.getUser().getId() != userId){
+            throw new MealServiceException("There is no food: [" + food.getId() + "] for user: [" + userId + "].");
         }
 
-        int foodPosition = meal.getFoods().indexOf(food);
-        meal.decreaseMacroByFood(food);
+        meal.removeFood(food);
 
-        food.setName(updateFoodDTO.getName());
-        food.setKcal(updateFoodDTO.getKcal());
-        food.setCarbohydrate(updateFoodDTO.getCarbohydrate());
-        food.setFat(updateFoodDTO.getFat());
-        food.setProtein(updateFoodDTO.getProtein());
+        food.fillWithDataFrom(updateFoodDTO);
 
-        meal.increaseMacroByFood(food);
-        meal.getFoods().set(foodPosition, food);
+        meal.addFood(food);
 
         return this.mealRepository.save(meal);
     }
 
     public Meal removeFood(long userId, RemoveFoodDTO removeFoodDTO){
-        Meal meal = this.mealRepository.findByIdAndUserId(removeFoodDTO.getMealId(), userId).orElseThrow(
-                () -> new MealServiceException("There is no meal with id: [" + removeFoodDTO.getMealId() + "]."));
-
         Food food = this.foodRepository.findById(removeFoodDTO.getFoodId()).orElseThrow(
-                () -> new MealServiceException("There is no food with id: ]" + removeFoodDTO.getFoodId() + "]."));
+                () -> new MealServiceException("There is no food with id: [" + removeFoodDTO.getFoodId() + "]."));
+        Meal meal = food.getMeal();
 
-        if (!meal.getFoods().contains(food)){
-            throw new MealServiceException("The food with id: [" + food.getId() + "] doesn't belong to meal with id: [" + meal.getId() +"].");
+        //todo - change the http_status for 401 unauthorized
+        if (meal.getUser().getId() != userId){
+            throw new MealServiceException ("There is no food: [" + food.getId() + "] for user: [" + userId + "].");
         }
 
-        meal.decreaseMacroByFood(food);
-        meal.getFoods().remove(food);
-//        this.foodRepository.delete(food); <<<---- test: you don't need it
+        meal.removeFood(food);
+
         return this.mealRepository.save(meal);
     }
 
     public Food getFood(long userId, GetFoodDTO getFoodDTO){
-
-
-        return this.foodRepository.findById(getFoodDTO.getFoodId()).orElseThrow(
+        Food food = this.foodRepository.findById(getFoodDTO.getFoodId()).orElseThrow(
                 () -> new MealServiceException("There is no food with id: ]" + getFoodDTO.getFoodId() + "]."));
+
+        if (food.getMeal().getUser().getId() != userId){
+            throw new MealServiceException("There is no food: [" + food.getId() + "] for user: [" + userId + "].");
+        } else return food;
     }
 
     public LocalDate parseStrToLocalDate(String dateStr){
