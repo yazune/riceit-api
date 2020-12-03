@@ -43,7 +43,7 @@ public class MealService {
         return this.mealRepository.save(meal);
     }
 
-    public List<Meal> showAll(long userId, DateDTO dateDTO){
+    public List<Meal> showAllMeals(long userId, DateDTO dateDTO){
         LocalDate date = parseStrToLocalDate(dateDTO.getDate());
         return this.mealRepository.findAllByUserIdAndDate(userId, date);
     }

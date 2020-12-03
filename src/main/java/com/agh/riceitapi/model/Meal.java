@@ -20,7 +20,6 @@ public class Meal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    //TODO - check the type LocalDate
     private LocalDate date;
 
     private double kcal = 0.0;
