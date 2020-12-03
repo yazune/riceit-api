@@ -42,10 +42,10 @@ public class MealController {
     }
 
     @PostMapping("/meals/showAll")
-    public ResponseEntity<List<Meal>> showAll(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO) throws MealServiceException{
+    public ResponseEntity<List<Meal>> showAllMeals(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO) throws MealServiceException{
         long startTime = System.nanoTime();
 
-        List<Meal> meals = this.mealService.showAll(currentUser.getId(), dateDTO);
+        List<Meal> meals = this.mealService.showAllMeals(currentUser.getId(), dateDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "showing all meals", (elapsedTime/Math.pow(10,9))));
