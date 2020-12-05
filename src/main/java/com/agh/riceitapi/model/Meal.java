@@ -6,8 +6,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +28,13 @@ public class Meal {
 
     private double fat = 0.0;
 
-//    old one - unidirectional
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "meal_id")
-//    private List<Food> foods = new ArrayList<>();
-
     @OneToMany(
             mappedBy = "meal",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<Food> foods = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) //TODO - check if deleting the meal deletes an user #hopenot
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 
@@ -131,4 +122,14 @@ public class Meal {
         this.fat -= food.getFat();
         this.protein -= food.getProtein();
     }
+
+    public void addUser(User user){
+        this.setUser(user);
+        user.getMeals().add(this);
+    }
+    public void removeUser(){
+        this.user.getMeals().remove(this);
+        this.setUser(null);
+    }
+
 }

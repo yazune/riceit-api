@@ -35,10 +35,10 @@ public class MealService {
                 () -> new MealServiceException("There is no user with id: [" + userId + "]."));
 
         Meal meal = new Meal();
-        meal.setUser(user);
 
         LocalDate date = parseStrToLocalDate(dateDTO.getDate());
         meal.setDate(date);
+        meal.addUser(user);
 
         return this.mealRepository.save(meal);
     }
@@ -52,6 +52,7 @@ public class MealService {
         Meal meal = this.mealRepository.findByIdAndUserId(removeMealDTO.getMealId(), userId).orElseThrow(
                 () -> new MealServiceException("There is no meal with id: [" + removeMealDTO.getMealId() + "]."));
 
+        meal.removeUser();
         this.mealRepository.delete(meal);
     }
 

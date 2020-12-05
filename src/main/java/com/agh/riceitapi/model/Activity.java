@@ -22,9 +22,7 @@ public class Activity {
 
     private double kcalBurnt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) //TODO - check if deleting the meal deletes an user #hopenot
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 
@@ -68,5 +66,15 @@ public class Activity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void addUser(User user){
+        this.setUser(user);
+        user.getActivities().add(this);
+    }
+
+    public void removeUser(){
+        this.user.getActivities().remove(this);
+        this.setUser(null);
     }
 }

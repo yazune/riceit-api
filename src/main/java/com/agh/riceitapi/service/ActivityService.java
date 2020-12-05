@@ -35,8 +35,8 @@ public class ActivityService {
         activity.setDate(date);
         activity.setKcalBurnt(addActivityDTO.getKcalBurnt());
         activity.setName(addActivityDTO.getName());
-        activity.setUser(user);
 
+        activity.addUser(user);
         return this.activityRepository.save(activity);
     }
 
@@ -57,6 +57,7 @@ public class ActivityService {
                 () -> new ActivityServiceException("There is no activity with id: [" + removeActivityDTO.getActivityId()
                         + "] for user: [" + userId + "]."));
 
+        activity.removeUser();
         this.activityRepository.delete(activity);
     }
 
