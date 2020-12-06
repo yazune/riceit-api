@@ -31,36 +31,36 @@ public class ActivityController {
     public ResponseEntity<Activity> addActivity(@CurrentUser UserPrincipal currentUser, @RequestBody AddActivityDTO addActivityDTO){
         long startTime = System.nanoTime();
 
-        Activity activity = this.activityService.addActivity(currentUser.getId(), addActivityDTO);
+        activityService.addActivity(currentUser.getId(), addActivityDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "adding new activity", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(activity, HttpStatus.OK);
+        return new ResponseEntity("Activity added successfully.", HttpStatus.OK);
     }
 
     @PostMapping("/activities/remove")
     public ResponseEntity<String> removeActivity(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveActivityDTO removeActivityDTO){
         long startTime = System.nanoTime();
 
-        this.activityService.removeActivity(currentUser.getId(), removeActivityDTO);
+        activityService.removeActivity(currentUser.getId(), removeActivityDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "removing an activity", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity("Activity: [" + removeActivityDTO.getActivityId() + "] successfully removed", HttpStatus.OK);
+        return new ResponseEntity("Activity successfully removed.", HttpStatus.OK);
     }
 
     @PostMapping("/activities/update")
     public ResponseEntity<Activity> updateActivity(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateActivityDTO updateActivityDTO){
         long startTime = System.nanoTime();
 
-        Activity activity = this.activityService.updateActivity(currentUser.getId(), updateActivityDTO);
+        activityService.updateActivity(currentUser.getId(), updateActivityDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "updating an activity", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(activity, HttpStatus.OK);
+        return new ResponseEntity("Activity updated successfully", HttpStatus.OK);
     }
 
     @PostMapping("/activities/showAll")

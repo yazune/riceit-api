@@ -123,11 +123,11 @@ public class Meal {
         this.protein -= food.getProtein();
     }
 
-    public void addUser(User user){
+    public void createConnectionWithUser(User user){
         this.setUser(user);
         user.getMeals().add(this);
     }
-    public void removeUser(){
+    public void removeConnectionWithUser(){
         this.user.getMeals().remove(this);
         this.setUser(null);
     }

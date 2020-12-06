@@ -1,11 +1,13 @@
 package com.agh.riceitapi.service;
 
+import com.agh.riceitapi.dto.DeleteUserDTO;
 import com.agh.riceitapi.dto.RegisterDTO;
 import com.agh.riceitapi.exception.RegisterException;
 import com.agh.riceitapi.model.Role;
 import com.agh.riceitapi.model.RoleName;
 import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.repository.RoleRepository;
+import com.agh.riceitapi.repository.UserDetailsRepository;
 import com.agh.riceitapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,13 +25,16 @@ public class UserService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private UserDetailsRepository userDetailsRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public Boolean existsByUsername(String username){
-        return this.userRepository.existsByUsername(username);
+        return userRepository.existsByUsername(username);
     }
     public Boolean existsByEmail(String email){
-        return this.userRepository.existsByEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
     public User createUser(RegisterDTO registerDTO){
@@ -47,6 +52,14 @@ public class UserService {
                 () -> new RegisterException("There is no [ROLE_USER] role"));
         user.setRoles(Collections.singleton(role));
 
-        return this.userRepository.save(user);
+        return userRepository.save(user);
     }
+
+    //method for testing OnCascade DELETE
+    public void deleteUser(DeleteUserDTO deleteUserDTO){
+        this.userRepository.deleteById(deleteUserDTO.getUserId());
+    }
+
+
+
 }

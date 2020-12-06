@@ -1,7 +1,10 @@
 package com.agh.riceitapi.controller;
 
+import com.agh.riceitapi.dto.DeleteUserDTO;
 import com.agh.riceitapi.dto.RegisterDTO;
+import com.agh.riceitapi.exception.EmailAlreadyExistsException;
 import com.agh.riceitapi.exception.RegisterException;
+import com.agh.riceitapi.exception.UserAlreadyExistsException;
 import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.service.UserService;
 
@@ -32,10 +35,10 @@ public class UserController {
 
        long startTime = System.nanoTime();
        if (userService.existsByUsername(registerDTO.getUsername())){
-           throw new RegisterException("Username ["+ registerDTO.getUsername()+"] already exists.");
+           throw new UserAlreadyExistsException("Username ["+ registerDTO.getUsername()+"] already exists.");
        }
        if (userService.existsByEmail(registerDTO.getEmail())){
-           throw new RegisterException("Email ["+ registerDTO.getEmail()+"] already exists.");
+           throw new EmailAlreadyExistsException("Email ["+ registerDTO.getEmail()+"] already exists.");
        }
 
        User user = this.userService.createUser(registerDTO);
@@ -44,7 +47,9 @@ public class UserController {
        return new ResponseEntity(user, HttpStatus.OK);
     }
 
-
-
-
+    @PostMapping("/user/delete")
+    public ResponseEntity deleteUser(@RequestBody DeleteUserDTO deleteUserDTO){
+        userService.deleteUser(deleteUserDTO);
+        return ResponseEntity.ok("Deleted!");
+    }
 }

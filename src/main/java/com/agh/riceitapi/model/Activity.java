@@ -68,12 +68,12 @@ public class Activity {
         this.user = user;
     }
 
-    public void addUser(User user){
+    public void createConnectionWithUser(User user){
         this.setUser(user);
         user.getActivities().add(this);
     }
 
-    public void removeUser(){
+    public void removeConnectionWithUser(){
         this.user.getActivities().remove(this);
         this.setUser(null);
     }
