@@ -123,4 +123,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserDetailsNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserDetailsNotFoundException(UserDetailsNotFoundException ex){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse errorResponse = new ErrorResponse("User details not found.", details);
+        log.warn(ex);
+        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
 }

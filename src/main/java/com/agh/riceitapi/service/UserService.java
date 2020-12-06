@@ -57,7 +57,7 @@ public class UserService {
 
     //method for testing OnCascade DELETE
     public void deleteUser(DeleteUserDTO deleteUserDTO){
-        this.userRepository.deleteById(deleteUserDTO.getUserId());
+        userRepository.deleteById(deleteUserDTO.getUserId());
     }
 
 

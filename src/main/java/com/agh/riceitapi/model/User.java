@@ -40,6 +40,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private UserDetails userDetails;
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -118,5 +124,13 @@ public class User {
 
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
+    }
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 }

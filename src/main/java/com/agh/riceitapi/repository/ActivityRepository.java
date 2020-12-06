@@ -17,7 +17,4 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
     @Query("SELECT a FROM Activity a WHERE a.user.id = :userId AND a.date = :date")
     List<Activity> findAllByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
-
-    @Query("SELECT a from Activity a WHERE a.id = :activityId AND a.user.id = :userId")
-    Optional<Activity> findByIdAndUserId(long activityId, long userId);
 }
