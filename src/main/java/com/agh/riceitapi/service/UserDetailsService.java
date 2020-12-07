@@ -20,6 +20,9 @@ public class UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GoalService goalService;
+
 
     public boolean areUserDetailsCreated(long userId){
         return userDetailsRepository.findByUserId(userId).isPresent();
@@ -34,6 +37,8 @@ public class UserDetailsService {
 
         userDetails.createConnectionWithUser(user);
         userDetailsRepository.save(userDetails);
+
+        goalService.createGoal(userId, userDetails);
     }
 
     public void updateUserDetails(long userId, UserDetailsDTO userDetailsDTO) throws UserDetailsNotFoundException{
@@ -42,6 +47,8 @@ public class UserDetailsService {
 
         userDetails.fillWithDataFrom(userDetailsDTO);
         userDetailsRepository.save(userDetails);
+
+        goalService.recalculateAutoParameters(userId, userDetails);
     }
 
     public UserDetails getUserDetails(long userId) throws UserDetailsNotFoundException{

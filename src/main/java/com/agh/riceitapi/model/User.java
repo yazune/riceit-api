@@ -46,6 +46,12 @@ public class User {
             orphanRemoval = true)
     private UserDetails userDetails;
 
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Goal goal;
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -132,5 +138,13 @@ public class User {
 
     public void setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public Goal getGoal() {
+        return goal;
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
     }
 }

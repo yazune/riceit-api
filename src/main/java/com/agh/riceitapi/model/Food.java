@@ -101,4 +101,5 @@ public class Food {
         this.fat = foodDTO.getFat();
         this.carbohydrate = foodDTO.getCarbohydrate();
     }
+
 }
