@@ -132,13 +132,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DayNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleDayNotFoundException(DayNotFoundException ex){
-        List<String> details = new ArrayList<>();
-        details.add(ex.getLocalizedMessage());
-        ErrorResponse errorResponse = new ErrorResponse("Day not found.", details);
-        log.warn(ex);
-        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
 }
