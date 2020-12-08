@@ -28,6 +28,9 @@ public class MealService {
     @Autowired
     private FoodRepository foodRepository;
 
+    @Autowired
+    private DayService dayService;
+
     public void createMeal(long userId, DateDTO dateDTO) throws UserNotFoundException{
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
@@ -54,6 +57,8 @@ public class MealService {
 
         meal.removeConnectionWithUser();
         mealRepository.delete(meal);
+
+        dayService.removeMeal(userId, meal.getDate(), meal);
     }
 
     public void addFood(long userId, AddFoodDTO addFoodDTO) throws MealNotFoundException, PermissionDeniedException{
@@ -67,6 +72,8 @@ public class MealService {
 
         meal.addFood(food);
         mealRepository.save(meal);
+
+        dayService.addFood(userId, meal.getDate(), food);
     }
 
     public void updateFood(long userId, UpdateFoodDTO updateFoodDTO) throws FoodNotFoundException, PermissionDeniedException{
@@ -79,9 +86,12 @@ public class MealService {
         }
 
         meal.removeFood(food);
+        dayService.removeFood(userId, meal.getDate(), food);
 
         food.fillWithDataFrom(updateFoodDTO);
+
         meal.addFood(food);
+        dayService.addFood(userId, meal.getDate(), food);
 
         mealRepository.save(meal);
     }
@@ -97,6 +107,8 @@ public class MealService {
 
         meal.removeFood(food);
         mealRepository.save(meal);
+
+        dayService.removeFood(userId, meal.getDate(), food);
     }
 
     public Food getFood(long userId, GetFoodDTO getFoodDTO) throws FoodNotFoundException, PermissionDeniedException{

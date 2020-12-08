@@ -44,13 +44,22 @@ public class User {
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonIgnore
     private UserDetails userDetails;
 
     @OneToOne(
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonIgnore
     private Goal goal;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore
+    private List<Day> days = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "user",
@@ -146,5 +155,13 @@ public class User {
 
     public void setGoal(Goal goal) {
         this.goal = goal;
+    }
+
+    public List<Day> getDays() {
+        return days;
+    }
+
+    public void setDays(List<Day> days) {
+        this.days = days;
     }
 }
