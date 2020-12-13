@@ -13,10 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -51,5 +48,10 @@ public class UserController {
     public ResponseEntity deleteUser(@RequestBody DeleteUserDTO deleteUserDTO){
         userService.deleteUser(deleteUserDTO);
         return ResponseEntity.ok("Deleted!");
+    }
+
+    @GetMapping("/test/hello")
+    public String hello(){
+        return "hello man!";
     }
 }
