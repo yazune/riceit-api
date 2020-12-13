@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class DayService {
@@ -25,13 +26,12 @@ public class DayService {
         LocalDate date = DateValidator.parseStrToLocalDate(dateDTO.getDate());
 
         return dayRepository.findByUserIdAndDate(userId, date).orElseGet(
-                () -> createDay(userId, date)
-        );
+                () -> createDay(userId, date));
     }
 
     public Day createDay(long userId, LocalDate date){
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
+        User user = userRepository.findById(userId).orElseGet(
+                () -> {throw new UserNotFoundException("There is no user with id: [" + userId + "].");});
 
         Goal goal = user.getGoal();
         Day day = new Day();
@@ -42,23 +42,33 @@ public class DayService {
     }
 
     public void addFood(long userId, LocalDate date, Food food){
-        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseThrow(
-                () -> new DayNotFoundException("There is no day to update."));
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
         day.addMacroFromFood(food);
         dayRepository.save(day);
     }
 
     public void removeFood(long userId, LocalDate date, Food food){
-        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseThrow(
-                () -> new DayNotFoundException("There is no day to update."));
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+
         day.removeMacroFromFood(food);
         dayRepository.save(day);
     }
 
     public void removeMeal(long userId, LocalDate date, Meal meal){
-        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseThrow(
-                () -> new DayNotFoundException("There is no day to update."));
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+
         day.removeMacroFromMeal(meal);
+        dayRepository.save(day);
+    }
+
+    public void updateFood(long userId, LocalDate date, Food foodBeforeChanges, Food foodAfterChanges){
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+        day.removeMacroFromFood(foodBeforeChanges);
+        day.addMacroFromFood(foodAfterChanges);
         dayRepository.save(day);
     }
 
