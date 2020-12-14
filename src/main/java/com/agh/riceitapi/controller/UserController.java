@@ -31,12 +31,6 @@ public class UserController {
     public @ResponseBody ResponseEntity<User> register(@Valid @RequestBody RegisterDTO registerDTO) throws RegisterException {
 
        long startTime = System.nanoTime();
-       if (userService.existsByUsername(registerDTO.getUsername())){
-           throw new UserAlreadyExistsException("Username ["+ registerDTO.getUsername()+"] already exists.");
-       }
-       if (userService.existsByEmail(registerDTO.getEmail())){
-           throw new EmailAlreadyExistsException("Email ["+ registerDTO.getEmail()+"] already exists.");
-       }
 
        User user = this.userService.createUser(registerDTO);
        long elapsedTime = System.nanoTime() - startTime;

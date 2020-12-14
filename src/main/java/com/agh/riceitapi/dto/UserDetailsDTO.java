@@ -15,7 +15,7 @@ public class UserDetailsDTO {
 
     private double k;
 
-    private UserDetailsDTO(){}
+    public UserDetailsDTO(){}
 
     public double getHeight() {
         return height;

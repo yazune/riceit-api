@@ -321,8 +321,11 @@ public class MealTest extends AuthTest {
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.kcal", is(50.0)));
-
     }
+
+
+
+
 
 
 

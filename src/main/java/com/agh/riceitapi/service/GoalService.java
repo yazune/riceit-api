@@ -19,22 +19,12 @@ public class GoalService {
     @Autowired
     private UserRepository userRepository;
 
-    public void createGoal(long userId, UserDetails userDetails) throws UserNotFoundException{
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
-
-        Goal goal = new Goal();
-        goal.recalculateParameters(userDetails);
-        goal.createConnectionWithUser(user);
-        goalRepository.save(goal);
-    }
-
-    public void recalculateAutoParameters(long userId, UserDetails userDetails) throws UserNotFoundException{
+    public void autoCalculateParameters(long userId, UserDetails userDetails) throws UserNotFoundException{
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
 
         Goal goal = user.getGoal();
-        goal.recalculateParameters(userDetails);
+        goal.calculateParameters(userDetails);
         goalRepository.save(goal);
     }
 

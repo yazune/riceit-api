@@ -18,28 +18,7 @@ public class UserDetailsService {
     private UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private GoalService goalService;
-
-
-    public boolean areUserDetailsCreated(long userId){
-        return userDetailsRepository.findByUserId(userId).isPresent();
-    }
-
-    public void createUserDetails(long userId, UserDetailsDTO userDetailsDTO) throws UserNotFoundException{
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
-
-        UserDetails userDetails = new UserDetails();
-        userDetails.fillWithDataFrom(userDetailsDTO);
-
-        userDetails.createConnectionWithUser(user);
-        userDetailsRepository.save(userDetails);
-
-        goalService.createGoal(userId, userDetails);
-    }
 
     public void updateUserDetails(long userId, UserDetailsDTO userDetailsDTO) throws UserDetailsNotFoundException{
         UserDetails userDetails = userDetailsRepository.findByUserId(userId).orElseThrow(
@@ -48,7 +27,7 @@ public class UserDetailsService {
         userDetails.fillWithDataFrom(userDetailsDTO);
         userDetailsRepository.save(userDetails);
 
-        goalService.recalculateAutoParameters(userId, userDetails);
+        goalService.autoCalculateParameters(userId, userDetails);
     }
 
     public UserDetails getUserDetails(long userId) throws UserDetailsNotFoundException{

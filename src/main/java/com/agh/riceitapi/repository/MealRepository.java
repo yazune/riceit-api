@@ -15,5 +15,4 @@ public interface MealRepository extends JpaRepository<Meal, Long> {
 
     @Query("SELECT m FROM Meal m WHERE m.user.id = :userId AND m.date = :date")
     List<Meal> findAllByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
-
 }

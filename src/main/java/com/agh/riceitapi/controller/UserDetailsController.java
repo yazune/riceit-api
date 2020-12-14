@@ -27,19 +27,6 @@ public class UserDetailsController {
 
     private final Log log = LogFactory.getLog(getClass());
 
-
-    @GetMapping("/user/checkDetails")
-    public Boolean existsByUserId(@CurrentUser UserPrincipal currentUser){
-        long startTime = System.nanoTime();
-
-        boolean areDetailsCreated = userDetailsService.areUserDetailsCreated(currentUser.getId());
-
-        long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "checking if user details exists", (elapsedTime/Math.pow(10,9))));
-
-        return areDetailsCreated;
-    }
-
     @GetMapping("/user/getDetails")
     public ResponseEntity<UserDetails> getUserDetails(@CurrentUser UserPrincipal currentUser){
         long startTime = System.nanoTime();
@@ -50,19 +37,6 @@ public class UserDetailsController {
         log.info(format("%s in: %.10f [s]", "getting user details", (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity(userDetails, HttpStatus.OK);
-    }
-
-
-    @PostMapping("/user/createDetails")
-    public ResponseEntity<String> createUserDetails(@CurrentUser UserPrincipal currentUser, @RequestBody @Valid UserDetailsDTO userDetailsDTO){
-        long startTime = System.nanoTime();
-
-        userDetailsService.createUserDetails(currentUser.getId(), userDetailsDTO);
-
-        long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "creating user details", (elapsedTime/Math.pow(10,9))));
-
-        return new ResponseEntity("User details successfully created.", HttpStatus.OK);
     }
 
     @PostMapping("/user/updateDetails")

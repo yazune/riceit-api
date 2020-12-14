@@ -2,10 +2,8 @@ package com.agh.riceitapi.service;
 
 import com.agh.riceitapi.dto.DeleteUserDTO;
 import com.agh.riceitapi.dto.RegisterDTO;
-import com.agh.riceitapi.exception.RegisterException;
-import com.agh.riceitapi.model.Role;
-import com.agh.riceitapi.model.RoleName;
-import com.agh.riceitapi.model.User;
+import com.agh.riceitapi.exception.*;
+import com.agh.riceitapi.model.*;
 import com.agh.riceitapi.repository.RoleRepository;
 import com.agh.riceitapi.repository.UserDetailsRepository;
 import com.agh.riceitapi.repository.UserRepository;
@@ -25,32 +23,39 @@ public class UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private UserDetailsRepository userDetailsRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Boolean existsByUsername(String username){
-        return userRepository.existsByUsername(username);
-    }
-    public Boolean existsByEmail(String email){
-        return userRepository.existsByEmail(email);
-    }
-
     public User createUser(RegisterDTO registerDTO){
-        User user = new User();
+
+        if (userRepository.existsByUsername(registerDTO.getUsername())){
+            throw new UserAlreadyExistsException("Username ["+ registerDTO.getUsername()+"] already exists.");
+        }
+        if (userRepository.existsByEmail(registerDTO.getEmail())){
+            throw new EmailAlreadyExistsException("Email ["+ registerDTO.getEmail()+"] already exists.");
+        }
 
         if(registerDTO.getPassword().length()<8){
             throw new RegisterException("Password is too short!");
         }
-
+            //creating User
+        User user = new User();
         user.setUsername(registerDTO.getUsername());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 
         Role role = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(
-                () -> new RegisterException("There is no [ROLE_USER] role"));
+                () -> new InternalServerException("There is no [ROLE_USER] role"));
         user.setRoles(Collections.singleton(role));
+
+            //creating UserDetails and connecting with User
+        UserDetails userDetails = new UserDetails();
+        userDetails.fillWithDataFrom(registerDTO);
+        userDetails.createConnectionWithUser(user);
+
+            //creating Goal and connecting with User
+        Goal goal = new Goal();
+        goal.calculateParameters(userDetails);
+        goal.createConnectionWithUser(user);
 
         return userRepository.save(user);
     }

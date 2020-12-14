@@ -31,7 +31,7 @@ public class Goal {
 
     public Goal(){}
 
-    public void recalculateParameters(UserDetails userDetails){
+    public void calculateParameters(UserDetails userDetails){
         //hardcoded
         double bmr = 66 + (13.7*userDetails.getWeight()) + (5* userDetails.getHeight()) - (6.8*userDetails.getAge());
         this.autoKcal = bmr * userDetails.getK();

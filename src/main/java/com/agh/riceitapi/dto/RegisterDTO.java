@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class RegisterDTO {
+public class RegisterDTO extends UserDetailsDTO{
 
     @NotBlank(message = "Username can not be empty.")
     @Size(min = 2, max = 45, message = "Username should be between 2 and 45 characters.")
