@@ -5,6 +5,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -323,8 +324,66 @@ public class MealTest extends AuthTest {
                 .andExpect(jsonPath("$.kcal", is(50.0)));
     }
 
+    @Test
+    public void updateFoodWhichIsNotYoursShouldReturnUnauthorized() throws Exception{
+        String accessToken = obtainAccessToken("testuser", "testuser");
 
+        String jsonString = "{\"name\"      :\"apple\"," +
+                "\"foodId\"    :\"3\"," +
+                "\"kcal\"      :\"50\"," +
+                "\"protein\"   :\"0\"," +
+                "\"fat\"       :\"0\"," +
+                "\"carbohydrate\"      :\"12.5\"}";
 
+        mockMvc.perform(post("/meals/updateFood")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString)
+                .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void updateFoodShouldUpdateMacroInsideTheMeal() throws Exception{
+        String accessToken = obtainAccessToken("testuser2", "testuser2");
+
+        String jsonString1 = "{\"mealId\"     :\"2\"}";
+
+        ResultActions result =
+                mockMvc.perform(post("/meals/get")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonString1)
+                        .header("Authorization", "Bearer " + accessToken))
+                        .andExpect(status().isOk());
+
+        String resultString1 = result.andReturn().getResponse().getContentAsString();
+        JSONObject jsonObject = new JSONObject(resultString1);
+        double kcalBeforeUpdating = jsonObject.getDouble("kcal");
+
+        String jsonString2 = "{\"name\"            :\"food3_corrected\"," +
+                                "\"foodId\"        :\"3\"," +
+                                "\"kcal\"          :\"200\"," +
+                                "\"protein\"       :\"10\"," +
+                                "\"fat\"           :\"10\"," +
+                                "\"carbohydrate\"  :\"10\"}";
+
+        mockMvc.perform(post("/meals/updateFood")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString2)
+                .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk());
+
+        ResultActions result2 = mockMvc.perform(post("/meals/get")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString1)
+                .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk());
+
+        String resultString2 = result2.andReturn().getResponse().getContentAsString();
+        JSONObject jsonObject2 = new JSONObject(resultString2);
+        double kcalAfterUpdating = jsonObject2.getDouble("kcal");
+
+        assertNotEquals(kcalAfterUpdating,kcalBeforeUpdating);
+    }
 
 
 
