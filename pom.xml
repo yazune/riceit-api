@@ -14,10 +14,6 @@
 	<name>riceit-api</name>
 	<description>An application that collects data on meals and sports activities, which facilitates achieving the desired figure</description>
 
-	<properties>
-		<java.version>15</java.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
