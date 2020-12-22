@@ -13,8 +13,8 @@ INSERT INTO user_roles
 
 INSERT INTO user_details
     (id, user_id, height, weight, age, gender, k) VALUES
-    (1, 1, 170, 80, 25, 'male', 1.5),
-    (2, 2, 180, 100, 32, 'female', 1.1);
+    (1, 1, 170, 80, 25, 'MALE', 1.5),
+    (2, 2, 180, 100, 32, 'FEMALE', 1.1);
 
 INSERT INTO goals
     (id, user_id, man_params_in_use, auto_kcal, auto_protein, auto_fat, auto_carbohydrate, man_kcal, man_protein, man_fat, man_carbohydrate) VALUES
