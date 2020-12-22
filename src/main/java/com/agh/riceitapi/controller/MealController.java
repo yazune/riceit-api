@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -113,14 +114,11 @@ public class MealController {
     }
 
     @PostMapping("/meals/updateFood")
-    public ResponseEntity<Meal> updateFood(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateFoodDTO editFoodDTO) {
+    public ResponseEntity<Meal> updateFood(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateFoodDTO editFoodDTO) throws IOException {
         long startTime = System.nanoTime();
 
-        try{
-            mealService.updateFood(currentUser.getId(), editFoodDTO);
-        } catch (Exception ex){
+        mealService.updateFood(currentUser.getId(), editFoodDTO);
 
-        }
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "updating food", (elapsedTime/Math.pow(10,9))));
 
