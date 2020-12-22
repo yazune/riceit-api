@@ -19,7 +19,8 @@ public class UserDetails {
 
     private int age;
 
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private double k;
 
@@ -59,11 +60,11 @@ public class UserDetails {
         this.age = age;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -92,11 +93,12 @@ public class UserDetails {
         this.user.setUserDetails(null);
         this.setUser(null);
     }
+
     public void fillWithDataFrom(UserDetailsDTO userDetailsDTO){
         this.height = userDetailsDTO.getHeight();
         this.weight = userDetailsDTO.getWeight();
         this.age = userDetailsDTO.getAge();
-        this.gender = userDetailsDTO.getGender();
+        this.gender = Gender.valueOf(userDetailsDTO.getGender());
         this.k = userDetailsDTO.getK();
     }
 
