@@ -1,6 +1,7 @@
 package com.agh.riceitapi.model;
 
 import com.agh.riceitapi.dto.UpdateGoalDTO;
+import com.agh.riceitapi.exception.InternalServerException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -20,6 +21,9 @@ public class Goal {
 
     private boolean manParamsInUse = false;
 
+    @Enumerated(EnumType.STRING)
+    private DietType type = DietType.MAINTAINING;
+
     private double manKcal = 0.0;
     private double manProtein = 0.0;
     private double manFat = 0.0;
@@ -32,15 +36,25 @@ public class Goal {
     public Goal(){}
 
     public void calculateParameters(UserDetails userDetails){
-        //hardcoded
-        double bmr = 66 + (13.7*userDetails.getWeight()) + (5* userDetails.getHeight()) - (6.8*userDetails.getAge());
+
+        double bmr;
+
+        if (userDetails.getGender().equals(Gender.MALE)){
+            bmr = 66.4730 + (13.7516 * userDetails.getWeight()) + (5.0033 * userDetails.getHeight()) - (6.7750 * userDetails.getAge());
+        } else if (userDetails.getGender().equals(Gender.FEMALE)){
+            bmr = 665.0955 + (9.5634 * userDetails.getWeight()) + (1.8496 * userDetails.getHeight()) - (4.6756 * userDetails.getAge());
+        } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!");
+
+
+        if (this.type.equals(DietType.REDUCTION)){
+            bmr -= 500.0;
+        } else if(this.type.equals(DietType.GAIN)){
+            bmr += 500.0;
+        }
         this.autoKcal = bmr * userDetails.getK();
-
-        double weightInLbs = 2.205 * userDetails.getWeight();
-
-        this.autoProtein = weightInLbs;
-        this.autoFat = weightInLbs / 2;
-        this.autoCarbohydrate = (autoKcal - 4*autoProtein - 9*autoFat) / 4;
+        this.autoProtein = this.autoKcal * 15 / 100 / 4;
+        this.autoFat = this.autoKcal * 30 / 100 / 9;
+        this.autoCarbohydrate = this.autoKcal * 55 / 100 / 4;
     }
 
     public void updateManualParameters(UpdateGoalDTO updateGoalDTO){
@@ -147,4 +161,18 @@ public class Goal {
         this.user.setGoal(null);
         this.setUser(null);
     }
+
+    public boolean isManParamsInUse() {
+        return manParamsInUse;
+    }
+
+    public DietType getType() {
+        return type;
+    }
+
+    public void setType(DietType type) {
+        this.type = type;
+    }
+
+
 }
