@@ -72,4 +72,27 @@ public class DayService {
         dayRepository.save(day);
     }
 
+    public void addActivity(long userId, LocalDate date, Activity activity){
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+        day.addKcalBurntFromActivity(activity);
+        dayRepository.save(day);
+    }
+
+    public void removeActivity(long userId, LocalDate date, Activity activity){
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+
+        day.removeKcalBurntFromActivity(activity);
+        dayRepository.save(day);
+    }
+
+    public void updateActivity(long userId, LocalDate date, Activity activityBeforeChanges, Activity activityAfterChanges){
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+        day.removeKcalBurntFromActivity(activityBeforeChanges);
+        day.addKcalBurntFromActivity(activityAfterChanges);
+        dayRepository.save(day);
+    }
+
 }

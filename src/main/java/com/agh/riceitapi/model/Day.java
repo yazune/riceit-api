@@ -27,6 +27,8 @@ public class Day {
     private double fatConsumed = 0.0;
     private double carbohydrateConsumed = 0.0;
 
+    private double kcalBurnt = 0.0;
+
     public Day(){}
 
     public void fillWithDataFrom(Goal goal){
@@ -47,6 +49,14 @@ public class Day {
     @JsonIgnore
     private User user;
 
+    public void addKcalBurntFromActivity(Activity activity){
+        this.kcalBurnt += activity.getKcalBurnt();
+    }
+
+    public void removeKcalBurntFromActivity(Activity activity){
+        this.kcalBurnt -= activity.getKcalBurnt();
+    }
+
     public void addMacroFromFood(Food food){
         this.kcalConsumed += food.getKcal();
         this.proteinConsumed += food.getProtein();
@@ -60,6 +70,7 @@ public class Day {
         this.fatConsumed -= food.getFat();
         this.carbohydrateConsumed -= food.getCarbohydrate();
     }
+
 
     public void removeMacroFromMeal(Meal meal){
         for(Food f : meal.getFoods()){
@@ -155,5 +166,13 @@ public class Day {
 
     public void setCarbohydrateConsumed(double carbohydrateConsumed) {
         this.carbohydrateConsumed = carbohydrateConsumed;
+    }
+
+    public double getKcalBurnt() {
+        return kcalBurnt;
+    }
+
+    public void setKcalBurnt(double kcalBurnt) {
+        this.kcalBurnt = kcalBurnt;
     }
 }

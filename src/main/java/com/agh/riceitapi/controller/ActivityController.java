@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -52,7 +53,7 @@ public class ActivityController {
     }
 
     @PostMapping("/activities/update")
-    public ResponseEntity<Activity> updateActivity(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateActivityDTO updateActivityDTO){
+    public ResponseEntity<Activity> updateActivity(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateActivityDTO updateActivityDTO) throws IOException {
         long startTime = System.nanoTime();
 
         activityService.updateActivity(currentUser.getId(), updateActivityDTO);

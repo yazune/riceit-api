@@ -5,13 +5,17 @@ import com.agh.riceitapi.exception.ActivityNotFoundException;
 import com.agh.riceitapi.exception.PermissionDeniedException;
 import com.agh.riceitapi.exception.UserNotFoundException;
 import com.agh.riceitapi.model.Activity;
+import com.agh.riceitapi.model.Food;
 import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.repository.ActivityRepository;
 import com.agh.riceitapi.repository.UserRepository;
 import com.agh.riceitapi.validator.DateValidator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +27,9 @@ public class ActivityService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DayService dayService;
 
     public void addActivity(long userId, AddActivityDTO addActivityDTO) throws UserNotFoundException{
 
@@ -38,9 +45,11 @@ public class ActivityService {
 
         activity.createConnectionWithUser(user);
         activityRepository.save(activity);
+
+        dayService.addActivity(userId, date, activity);
     }
 
-    public void updateActivity(long userId, UpdateActivityDTO updateActivityDTO) throws ActivityNotFoundException, PermissionDeniedException{
+    public void updateActivity(long userId, UpdateActivityDTO updateActivityDTO) throws ActivityNotFoundException, PermissionDeniedException, IOException {
 
         Activity activity = activityRepository.findById(updateActivityDTO.getActivityId()).orElseThrow(
                 () -> new ActivityNotFoundException("There is no activity with id: [" + updateActivityDTO.getActivityId() + "]."));
@@ -49,10 +58,16 @@ public class ActivityService {
             throw new PermissionDeniedException("Permission denied.");
         }
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        Activity activityBeforeChanges = objectMapper.readValue(objectMapper.writeValueAsString(activity), Activity.class);
+
         activity.setName(updateActivityDTO.getName());
         activity.setKcalBurnt(updateActivityDTO.getKcalBurnt());
 
         activityRepository.save(activity);
+
+        dayService.updateActivity(userId, activity.getDate(), activityBeforeChanges, activity);
     }
 
     public void removeActivity(long userId, RemoveActivityDTO removeActivityDTO) throws ActivityNotFoundException, PermissionDeniedException{
@@ -65,6 +80,8 @@ public class ActivityService {
 
         activity.removeConnectionWithUser();
         activityRepository.delete(activity);
+
+        dayService.removeActivity(userId, activity.getDate(), activity);
     }
 
     public Activity getActivity(long userId, GetActivityDTO getActivityDTO) throws ActivityNotFoundException, PermissionDeniedException{
