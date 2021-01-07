@@ -1,6 +1,8 @@
 package com.agh.riceitapi.service;
 
 import com.agh.riceitapi.dto.DeleteUserDTO;
+import com.agh.riceitapi.dto.ExistsEmailDTO;
+import com.agh.riceitapi.dto.ExistsUsernameDTO;
 import com.agh.riceitapi.dto.RegisterDTO;
 import com.agh.riceitapi.exception.*;
 import com.agh.riceitapi.model.*;
@@ -58,6 +60,14 @@ public class UserService {
         goal.createConnectionWithUser(user);
 
         return userRepository.save(user);
+    }
+
+    public boolean existsByUsername(ExistsUsernameDTO existsUsernameDTO){
+        return userRepository.existsByUsername(existsUsernameDTO.getUsername());
+    }
+
+    public boolean existsByEmail(ExistsEmailDTO existsEmailDTO){
+        return userRepository.existsByEmail(existsEmailDTO.getEmail());
     }
 
     //method for testing OnCascade DELETE
