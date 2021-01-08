@@ -1,9 +1,6 @@
 package com.agh.riceitapi.service;
 
-import com.agh.riceitapi.dto.DeleteUserDTO;
-import com.agh.riceitapi.dto.ExistsEmailDTO;
-import com.agh.riceitapi.dto.ExistsUsernameDTO;
-import com.agh.riceitapi.dto.RegisterDTO;
+import com.agh.riceitapi.dto.*;
 import com.agh.riceitapi.exception.*;
 import com.agh.riceitapi.model.*;
 import com.agh.riceitapi.repository.RoleRepository;
@@ -62,12 +59,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean existsByUsername(ExistsUsernameDTO existsUsernameDTO){
-        return userRepository.existsByUsername(existsUsernameDTO.getUsername());
+    public BooleanDTO existsByUsername(ExistsUsernameDTO existsUsernameDTO){
+
+        BooleanDTO booleanDTO = new BooleanDTO();
+        booleanDTO.setBool(userRepository.existsByUsername(existsUsernameDTO.getUsername()));
+        return booleanDTO;
     }
 
-    public boolean existsByEmail(ExistsEmailDTO existsEmailDTO){
-        return userRepository.existsByEmail(existsEmailDTO.getEmail());
+    public BooleanDTO existsByEmail(ExistsEmailDTO existsEmailDTO){
+
+        BooleanDTO booleanDTO = new BooleanDTO();
+        booleanDTO.setBool(userRepository.existsByEmail(existsEmailDTO.getEmail()));
+        return booleanDTO;
     }
 
     //method for testing OnCascade DELETE

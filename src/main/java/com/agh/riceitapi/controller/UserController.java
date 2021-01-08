@@ -1,9 +1,6 @@
 package com.agh.riceitapi.controller;
 
-import com.agh.riceitapi.dto.DeleteUserDTO;
-import com.agh.riceitapi.dto.ExistsEmailDTO;
-import com.agh.riceitapi.dto.ExistsUsernameDTO;
-import com.agh.riceitapi.dto.RegisterDTO;
+import com.agh.riceitapi.dto.*;
 import com.agh.riceitapi.exception.EmailAlreadyExistsException;
 import com.agh.riceitapi.exception.RegisterException;
 import com.agh.riceitapi.exception.UserAlreadyExistsException;
@@ -47,25 +44,25 @@ public class UserController {
     }
 
     @PostMapping("/existsByUsername")
-    public @ResponseBody ResponseEntity<Boolean> existsByUsername(@Valid @RequestBody ExistsUsernameDTO existsUsernameDTO){
+    public @ResponseBody ResponseEntity<BooleanDTO> existsByUsername(@Valid @RequestBody ExistsUsernameDTO existsUsernameDTO){
 
         long startTime = System.nanoTime();
 
-        Boolean check = this.userService.existsByUsername(existsUsernameDTO);
+        BooleanDTO booleanDTO = this.userService.existsByUsername(existsUsernameDTO);
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
-        return new ResponseEntity(check, HttpStatus.OK);
+        return new ResponseEntity(booleanDTO, HttpStatus.OK);
 
     }
 
     @PostMapping("/existsByEmail")
-    public @ResponseBody ResponseEntity<Boolean> existsByEmail(@Valid @RequestBody ExistsEmailDTO existsEmailDTO){
+    public @ResponseBody ResponseEntity<BooleanDTO> existsByEmail(@Valid @RequestBody ExistsEmailDTO existsEmailDTO){
 
         long startTime = System.nanoTime();
-        Boolean check = this.userService.existsByEmail(existsEmailDTO);
+        BooleanDTO booleanDTO = this.userService.existsByEmail(existsEmailDTO);
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
-        return new ResponseEntity(check, HttpStatus.OK);
+        return new ResponseEntity(booleanDTO, HttpStatus.OK);
     }
 
     @GetMapping("/test/hello")
