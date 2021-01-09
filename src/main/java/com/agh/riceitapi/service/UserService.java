@@ -56,7 +56,10 @@ public class UserService {
         goal.calculateParameters(userDetails);
         goal.createConnectionWithUser(user);
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        UsernameDTO usernameDTO = new UsernameDTO(user.getUsername());
+        return usernameDTO;
     }
 
     public BooleanDTO existsByUsername(ExistsUsernameDTO existsUsernameDTO){

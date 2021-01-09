@@ -27,14 +27,14 @@ public class UserController {
     private final Log log = LogFactory.getLog(getClass());
 
     @PostMapping("/auth/register")
-    public @ResponseBody ResponseEntity<User> register(@Valid @RequestBody RegisterDTO registerDTO) throws RegisterException {
+    public @ResponseBody ResponseEntity<UsernameDTO> register(@Valid @RequestBody RegisterDTO registerDTO) throws RegisterException {
 
        long startTime = System.nanoTime();
 
-       User user = this.userService.createUser(registerDTO);
+       UsernameDTO usernameDTO = this.userService.createUser(registerDTO);
        long elapsedTime = System.nanoTime() - startTime;
        log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
-       return new ResponseEntity(user, HttpStatus.OK);
+       return new ResponseEntity(usernameDTO, HttpStatus.OK);
     }
 
     @PostMapping("/user/delete")
