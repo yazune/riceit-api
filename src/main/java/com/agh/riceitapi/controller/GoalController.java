@@ -35,7 +35,7 @@ public class GoalController {
         goalService.updateManualParameters(currentUser.getId(),updateGoalDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "updating goal", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "updating a goal", (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity("Goal updated succesfully.", HttpStatus.OK);
     }
@@ -47,7 +47,7 @@ public class GoalController {
         Goal goal =  goalService.getGoal(currentUser.getId());
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "updating goal", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "getting a goal", (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity(goal, HttpStatus.OK);
 
@@ -60,7 +60,7 @@ public class GoalController {
         Boolean checker =  goalService.areManParamsInUse(currentUser.getId());
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "updating goal", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "checking if manual parameters are in use", (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity(checker, HttpStatus.OK);
     }

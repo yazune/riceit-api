@@ -50,7 +50,7 @@ public class UserController {
 
         BooleanDTO booleanDTO = this.userService.existsByUsername(existsUsernameDTO);
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s: %.10f [s]", "username check", (elapsedTime/Math.pow(10,9))));
         return new ResponseEntity(booleanDTO, HttpStatus.OK);
 
     }
@@ -61,7 +61,7 @@ public class UserController {
         long startTime = System.nanoTime();
         BooleanDTO booleanDTO = this.userService.existsByEmail(existsEmailDTO);
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s: %.10f [s]", "register", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s: %.10f [s]", "email check", (elapsedTime/Math.pow(10,9))));
         return new ResponseEntity(booleanDTO, HttpStatus.OK);
     }
 
