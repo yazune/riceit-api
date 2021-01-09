@@ -24,7 +24,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User createUser(RegisterDTO registerDTO){
+    public UsernameDTO createUser(RegisterDTO registerDTO){
 
         if (userRepository.existsByUsername(registerDTO.getUsername())){
             throw new UserAlreadyExistsException("Username ["+ registerDTO.getUsername()+"] already exists.");
