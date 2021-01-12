@@ -45,12 +45,12 @@ public class MealController {
     public ResponseEntity<List<Meal>> showAllMeals(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
         long startTime = System.nanoTime();
 
-        List<Meal> meals = mealService.showAllMeals(currentUser.getId(), dateDTO);
+        AllMealsDTO allMealsDTO = mealService.showAllMeals(currentUser.getId(), dateDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "showing all meals", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(meals, HttpStatus.OK);
+        return new ResponseEntity(allMealsDTO, HttpStatus.OK);
     }
 
     @PostMapping("/meals/remove")

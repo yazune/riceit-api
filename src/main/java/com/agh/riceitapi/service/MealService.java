@@ -46,9 +46,10 @@ public class MealService {
         mealRepository.save(meal);
     }
 
-    public List<Meal> showAllMeals(long userId, DateDTO dateDTO){
+    public AllMealsDTO showAllMeals(long userId, DateDTO dateDTO){
         LocalDate date = DateValidator.parseStrToLocalDate(dateDTO.getDate());
-        return mealRepository.findAllByUserIdAndDate(userId, date);
+        List<Meal> meals = mealRepository.findAllByUserIdAndDate(userId, date);
+        return new AllMealsDTO(meals);
     }
 
     public void removeMeal(long userId, RemoveMealDTO removeMealDTO) throws MealNotFoundException, PermissionDeniedException{
