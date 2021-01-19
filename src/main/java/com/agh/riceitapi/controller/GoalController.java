@@ -1,6 +1,8 @@
 package com.agh.riceitapi.controller;
 
 
+import com.agh.riceitapi.dto.BooleanDTO;
+import com.agh.riceitapi.dto.DietTypeDTO;
 import com.agh.riceitapi.dto.GetGoalDTO;
 import com.agh.riceitapi.dto.UpdateGoalDTO;
 import com.agh.riceitapi.model.Goal;
@@ -64,6 +66,37 @@ public class GoalController {
         log.info(format("%s in: %.10f [s]", "checking if manual parameters are in use", (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity(checker, HttpStatus.OK);
+    }
+
+    @PostMapping("/user/manParams")
+    public ResponseEntity<String> chooseManualOptions(@CurrentUser UserPrincipal currentUser, @RequestBody BooleanDTO booleanDTO){
+        long startTime = System.nanoTime();
+
+        goalService.chooseManualOptions(currentUser.getId(), booleanDTO.getBool());
+
+        long elapsedTime = System.nanoTime() - startTime;
+        log.info(format("%s in: %.10f [s]", "changing manParamsInUse", (elapsedTime/Math.pow(10,9))));
+
+        String responseStr;
+        if(booleanDTO.getBool()){
+            responseStr = "now in use";
+        } else {
+            responseStr = "not used now";
+        }
+
+        return new ResponseEntity("Manual parameters are " + responseStr, HttpStatus.OK);
+    }
+
+    @PostMapping("/user/changeDietType")
+    public ResponseEntity<String> chooseDietType(@CurrentUser UserPrincipal currentUser, @RequestBody DietTypeDTO dietTypeDTO){
+        long startTime = System.nanoTime();
+
+        goalService.chooseDietType(currentUser.getId(), dietTypeDTO.getDietType());
+
+        long elapsedTime = System.nanoTime() - startTime;
+        log.info(format("%s in: %.10f [s]", "changing diet type", (elapsedTime/Math.pow(10,9))));
+
+        return new ResponseEntity("Diet type " + dietTypeDTO.getDietType() + " has been set.", HttpStatus.OK);
     }
 
 }

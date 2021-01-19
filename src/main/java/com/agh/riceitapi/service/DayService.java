@@ -72,6 +72,15 @@ public class DayService {
         dayRepository.save(day);
     }
 
+    public void updateTodaysDay(long userId, Goal newGoal){
+        LocalDate date = LocalDate.now();
+        Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
+                () -> createDay(userId, date));
+
+        day.fillWithDataFrom(newGoal);
+        dayRepository.save(day);
+    }
+
     public void addActivity(long userId, LocalDate date, Activity activity){
         Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
                 () -> createDay(userId, date));
