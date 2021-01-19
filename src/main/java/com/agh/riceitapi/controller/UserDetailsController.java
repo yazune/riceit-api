@@ -1,5 +1,6 @@
 package com.agh.riceitapi.controller;
 
+import com.agh.riceitapi.dto.GetUserDetailsDTO;
 import com.agh.riceitapi.dto.UserDetailsDTO;
 import com.agh.riceitapi.model.UserDetails;
 import com.agh.riceitapi.security.CurrentUser;
@@ -28,15 +29,15 @@ public class UserDetailsController {
     private final Log log = LogFactory.getLog(getClass());
 
     @GetMapping("/user/getDetails")
-    public ResponseEntity<UserDetails> getUserDetails(@CurrentUser UserPrincipal currentUser){
+    public ResponseEntity<GetUserDetailsDTO> getUserDetails(@CurrentUser UserPrincipal currentUser){
         long startTime = System.nanoTime();
 
-        UserDetails userDetails = userDetailsService.getUserDetails(currentUser.getId());
+        GetUserDetailsDTO getUserDetailsDTO = userDetailsService.getUserDetails(currentUser);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "getting user details", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(userDetails, HttpStatus.OK);
+        return new ResponseEntity(getUserDetailsDTO, HttpStatus.OK);
     }
 
     @PostMapping("/user/updateDetails")
