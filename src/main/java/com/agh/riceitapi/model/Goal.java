@@ -22,7 +22,7 @@ public class Goal {
     private boolean manParamsInUse = false;
 
     @Enumerated(EnumType.STRING)
-    private DietType type = DietType.MAINTAINING;
+    private DietType dietType = DietType.MAINTAINING;
 
     private double manKcal = 0.0;
     private double manProtein = 0.0;
@@ -46,9 +46,9 @@ public class Goal {
         } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!");
 
 
-        if (this.type.equals(DietType.REDUCTION)){
+        if (this.dietType.equals(DietType.REDUCTION)){
             bmr -= 500.0;
-        } else if(this.type.equals(DietType.GAIN)){
+        } else if(this.dietType.equals(DietType.GAIN)){
             bmr += 500.0;
         }
         this.autoKcal = bmr * userDetails.getK();
@@ -166,12 +166,12 @@ public class Goal {
         return manParamsInUse;
     }
 
-    public DietType getType() {
-        return type;
+    public DietType getDietType() {
+        return dietType;
     }
 
-    public void setType(DietType type) {
-        this.type = type;
+    public void setDietType(DietType dietType) {
+        this.dietType = dietType;
     }
 
 

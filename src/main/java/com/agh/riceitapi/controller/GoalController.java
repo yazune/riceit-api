@@ -1,6 +1,7 @@
 package com.agh.riceitapi.controller;
 
 
+import com.agh.riceitapi.dto.GetGoalDTO;
 import com.agh.riceitapi.dto.UpdateGoalDTO;
 import com.agh.riceitapi.model.Goal;
 import com.agh.riceitapi.security.CurrentUser;
@@ -41,15 +42,15 @@ public class GoalController {
     }
 
     @GetMapping("/user/getGoal")
-    public ResponseEntity<Goal> getGoal(@CurrentUser UserPrincipal currentUser){
+    public ResponseEntity<GetGoalDTO> getGoal(@CurrentUser UserPrincipal currentUser){
         long startTime = System.nanoTime();
 
-        Goal goal =  goalService.getGoal(currentUser.getId());
+        GetGoalDTO getGoalDTO =  goalService.getGoal(currentUser.getId());
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "getting a goal", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(goal, HttpStatus.OK);
+        return new ResponseEntity(getGoalDTO, HttpStatus.OK);
 
     }
 

@@ -1,5 +1,6 @@
 package com.agh.riceitapi.service;
 
+import com.agh.riceitapi.dto.GetGoalDTO;
 import com.agh.riceitapi.dto.UpdateGoalDTO;
 import com.agh.riceitapi.exception.UserNotFoundException;
 import com.agh.riceitapi.model.Goal;
@@ -37,11 +38,13 @@ public class GoalService {
         goalRepository.save(goal);
     }
 
-    public Goal getGoal(long userId) throws UserNotFoundException{
+    public GetGoalDTO getGoal(long userId) throws UserNotFoundException{
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
 
-        return user.getGoal();
+        GetGoalDTO getGoalDTO = new GetGoalDTO();
+        getGoalDTO.fillDataWith(user.getGoal());
+        return getGoalDTO;
     }
 
     public boolean areManParamsInUse(long userId){
