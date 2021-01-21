@@ -77,7 +77,7 @@ public class SportController {
     }
 
     @PostMapping("/sports/showAll")
-    public ResponseEntity<AllSportsDTO> showAllSports(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
+    public ResponseEntity<List<Sport>> showAllSports(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
         long startTime = System.nanoTime();
 
         AllSportsDTO allSportsDTO = sportService.showAllSports(currentUser.getId(), dateDTO);
