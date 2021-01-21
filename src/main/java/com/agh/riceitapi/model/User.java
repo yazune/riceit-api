@@ -73,7 +73,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonIgnore
-    private List<Activity> activities = new ArrayList<>();
+    private List<Sport> sports = new ArrayList<>();
 
     public User(){}
 
@@ -133,12 +133,12 @@ public class User {
         this.meals = meals;
     }
 
-    public List<Activity> getActivities() {
-        return activities;
+    public List<Sport> getSports() {
+        return sports;
     }
 
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
+    public void setSports(List<Sport> sports) {
+        this.sports = sports;
     }
 
     public UserDetails getUserDetails() {

@@ -1,7 +1,6 @@
 package com.agh.riceitapi.service;
 
 import com.agh.riceitapi.dto.DateDTO;
-import com.agh.riceitapi.exception.DayNotFoundException;
 import com.agh.riceitapi.exception.UserNotFoundException;
 import com.agh.riceitapi.model.*;
 import com.agh.riceitapi.repository.DayRepository;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class DayService {
@@ -81,26 +79,26 @@ public class DayService {
         dayRepository.save(day);
     }
 
-    public void addActivity(long userId, LocalDate date, Activity activity){
+    public void addSport(long userId, LocalDate date, Sport sport){
         Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
                 () -> createDay(userId, date));
-        day.addKcalBurntFromActivity(activity);
+        day.addKcalBurntFromSport(sport);
         dayRepository.save(day);
     }
 
-    public void removeActivity(long userId, LocalDate date, Activity activity){
+    public void removeSport(long userId, LocalDate date, Sport sport){
         Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
                 () -> createDay(userId, date));
 
-        day.removeKcalBurntFromActivity(activity);
+        day.removeKcalBurntFromSport(sport);
         dayRepository.save(day);
     }
 
-    public void updateActivity(long userId, LocalDate date, Activity activityBeforeChanges, Activity activityAfterChanges){
+    public void updateSport(long userId, LocalDate date, Sport sportBeforeChanges, Sport sportAfterChanges){
         Day day = dayRepository.findByUserIdAndDate(userId, date).orElseGet(
                 () -> createDay(userId, date));
-        day.removeKcalBurntFromActivity(activityBeforeChanges);
-        day.addKcalBurntFromActivity(activityAfterChanges);
+        day.removeKcalBurntFromSport(sportBeforeChanges);
+        day.addKcalBurntFromSport(sportAfterChanges);
         dayRepository.save(day);
     }
 

@@ -1,16 +1,16 @@
 package com.agh.riceitapi.model;
 
 
+import com.agh.riceitapi.model.util.SportConstants;
+import com.agh.riceitapi.model.util.SportType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "activities")
-public class Activity {
+@Table(name = "sports")
+public class Sport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +20,40 @@ public class Activity {
 
     private String name;
 
+    private int duration;
+
     private double kcalBurnt;
+
+    @Enumerated(EnumType.STRING)
+    private SportType sportType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 
-    public Activity(){}
+    public Sport(){}
+
+    public void calculateKcalBurnt(double weight){
+        String type = sportType.name();
+        SportConstants ac = SportConstants.valueOf(type);
+        this.kcalBurnt = ac.burntPerKg * (duration/60) * weight;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public SportType getSportType() {
+        return sportType;
+    }
+
+    public void setSportType(SportType sportType) {
+        this.sportType = sportType;
+    }
 
     public long getId() {
         return id;
@@ -70,11 +97,11 @@ public class Activity {
 
     public void createConnectionWithUser(User user){
         this.setUser(user);
-        user.getActivities().add(this);
+        user.getSports().add(this);
     }
 
     public void removeConnectionWithUser(){
-        this.user.getActivities().remove(this);
+        this.user.getSports().remove(this);
         this.setUser(null);
     }
 }

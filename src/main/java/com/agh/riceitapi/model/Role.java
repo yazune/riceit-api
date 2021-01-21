@@ -1,5 +1,6 @@
 package com.agh.riceitapi.model;
 
+import com.agh.riceitapi.model.util.RoleName;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;

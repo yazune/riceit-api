@@ -1,7 +1,7 @@
 package com.agh.riceitapi.repository;
 
 import com.agh.riceitapi.model.Role;
-import com.agh.riceitapi.model.RoleName;
+import com.agh.riceitapi.model.util.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

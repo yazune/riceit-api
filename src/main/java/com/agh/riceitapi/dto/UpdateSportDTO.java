@@ -1,0 +1,62 @@
+package com.agh.riceitapi.dto;
+
+import javax.validation.constraints.NotBlank;
+
+public class UpdateSportDTO {
+
+    @NotBlank
+    private long sportId;
+
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private int duration;
+
+    @NotBlank
+    private String sportType;
+
+    @NotBlank
+    private double kcalBurnt;
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getSportType() {
+        return sportType;
+    }
+
+    public void setSportType(String sportType) {
+        this.sportType = sportType;
+    }
+
+
+    public long getSportId() {
+        return sportId;
+    }
+
+    public void setSportId(long sportId) {
+        this.sportId = sportId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getKcalBurnt() {
+        return kcalBurnt;
+    }
+
+    public void setKcalBurnt(double kcalBurnt) {
+        this.kcalBurnt = kcalBurnt;
+    }
+}

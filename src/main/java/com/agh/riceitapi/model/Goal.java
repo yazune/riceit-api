@@ -2,6 +2,8 @@ package com.agh.riceitapi.model;
 
 import com.agh.riceitapi.dto.UpdateGoalDTO;
 import com.agh.riceitapi.exception.InternalServerException;
+import com.agh.riceitapi.model.util.DietType;
+import com.agh.riceitapi.model.util.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

@@ -96,11 +96,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ActivityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleActivityNotFoundException(ActivityNotFoundException ex){
+    @ExceptionHandler(SportNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSportNotFoundException(SportNotFoundException ex){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse errorResponse = new ErrorResponse("Activity not found.", details);
+        ErrorResponse errorResponse = new ErrorResponse("Sport not found.", details);
         log.warn(ex);
         return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
     }

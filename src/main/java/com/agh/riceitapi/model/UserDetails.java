@@ -1,6 +1,7 @@
 package com.agh.riceitapi.model;
 
 import com.agh.riceitapi.dto.UserDetailsDTO;
+import com.agh.riceitapi.model.util.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

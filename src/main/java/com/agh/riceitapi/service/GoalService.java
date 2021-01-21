@@ -3,7 +3,7 @@ package com.agh.riceitapi.service;
 import com.agh.riceitapi.dto.GetGoalDTO;
 import com.agh.riceitapi.dto.UpdateGoalDTO;
 import com.agh.riceitapi.exception.UserNotFoundException;
-import com.agh.riceitapi.model.DietType;
+import com.agh.riceitapi.model.util.DietType;
 import com.agh.riceitapi.model.Goal;
 import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.model.UserDetails;

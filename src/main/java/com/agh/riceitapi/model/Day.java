@@ -49,12 +49,12 @@ public class Day {
     @JsonIgnore
     private User user;
 
-    public void addKcalBurntFromActivity(Activity activity){
-        this.kcalBurnt += activity.getKcalBurnt();
+    public void addKcalBurntFromSport(Sport sport){
+        this.kcalBurnt += sport.getKcalBurnt();
     }
 
-    public void removeKcalBurntFromActivity(Activity activity){
-        this.kcalBurnt -= activity.getKcalBurnt();
+    public void removeKcalBurntFromSport(Sport sport){
+        this.kcalBurnt -= sport.getKcalBurnt();
     }
 
     public void addMacroFromFood(Food food){

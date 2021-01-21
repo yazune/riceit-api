@@ -2,7 +2,7 @@ package com.agh.riceitapi.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class AddActivityDTO {
+public class AddSportAutoDTO {
 
     @NotBlank
     private String date;
@@ -11,9 +11,28 @@ public class AddActivityDTO {
     private String name;
 
     @NotBlank
-    private double kcalBurnt;
+    private int duration;
 
-    public AddActivityDTO() {
+    @NotBlank
+    private String sportType;
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getSportType() {
+        return sportType;
+    }
+
+    public void setSportType(String sportType) {
+        this.sportType = sportType;
+    }
+
+    public AddSportAutoDTO() {
     }
 
     public String getDate() {
@@ -30,13 +49,5 @@ public class AddActivityDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getKcalBurnt() {
-        return kcalBurnt;
-    }
-
-    public void setKcalBurnt(double kcalBurnt) {
-        this.kcalBurnt = kcalBurnt;
     }
 }
