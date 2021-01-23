@@ -13,6 +13,9 @@ public class ManualParametersService {
 
     @Autowired
     private ManualParametersRepository manualParametersRepository;
+    
+    @Autowired
+    private DayService dayService;
 
 
     public ManualParametersDTO getManualParameters(Long userId){
@@ -36,6 +39,7 @@ public class ManualParametersService {
         mp.setManCarbohydrate(dto.getCarbohydrateMan());
 
         manualParametersRepository.save(mp);
+        dayService.updateLastDay(userId);
     }
 
 
