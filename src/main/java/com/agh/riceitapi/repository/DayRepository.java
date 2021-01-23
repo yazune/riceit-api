@@ -15,6 +15,9 @@ import java.util.Optional;
 @Repository
 public interface DayRepository extends JpaRepository<Day, Long> {
 
+
     @Query("SELECT d FROM Day d WHERE d.user.id = :userId AND d.date = :date")
     Optional<Day> findByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
+
+    Optional<Day> findTopByUserIdOrderByDateDesc(Long userId);
 }

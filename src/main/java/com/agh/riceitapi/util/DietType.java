@@ -1,4 +1,4 @@
-package com.agh.riceitapi.model.util;
+package com.agh.riceitapi.util;
 
 public enum DietType {
     REDUCTION,

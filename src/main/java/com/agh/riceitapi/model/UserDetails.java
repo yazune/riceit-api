@@ -1,7 +1,7 @@
 package com.agh.riceitapi.model;
 
 import com.agh.riceitapi.dto.UserDetailsDTO;
-import com.agh.riceitapi.model.util.Gender;
+import com.agh.riceitapi.util.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -24,6 +24,8 @@ public class UserDetails {
     private Gender gender;
 
     private double k;
+
+    private double bmr;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -95,13 +97,11 @@ public class UserDetails {
         this.setUser(null);
     }
 
-    public void fillWithDataFrom(UserDetailsDTO userDetailsDTO){
-        this.height = userDetailsDTO.getHeight();
-        this.weight = userDetailsDTO.getWeight();
-        this.age = userDetailsDTO.getAge();
-        this.gender = Gender.valueOf(userDetailsDTO.getGender());
-        this.k = userDetailsDTO.getK();
+    public double getBmr() {
+        return bmr;
     }
 
-
+    public void setBmr(double bmr) {
+        this.bmr = bmr;
+    }
 }

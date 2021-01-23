@@ -6,7 +6,7 @@ import com.agh.riceitapi.exception.PermissionDeniedException;
 import com.agh.riceitapi.exception.UserNotFoundException;
 import com.agh.riceitapi.model.Sport;
 import com.agh.riceitapi.model.User;
-import com.agh.riceitapi.model.util.SportType;
+import com.agh.riceitapi.util.SportType;
 import com.agh.riceitapi.repository.SportRepository;
 import com.agh.riceitapi.repository.UserRepository;
 import com.agh.riceitapi.validator.DateValidator;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class SportService {

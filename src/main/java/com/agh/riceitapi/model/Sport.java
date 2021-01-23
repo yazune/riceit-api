@@ -1,8 +1,8 @@
 package com.agh.riceitapi.model;
 
 
-import com.agh.riceitapi.model.util.SportConstants;
-import com.agh.riceitapi.model.util.SportType;
+import com.agh.riceitapi.util.SportConstants;
+import com.agh.riceitapi.util.SportType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

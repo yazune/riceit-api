@@ -27,27 +27,32 @@ public class Day {
     private double fatConsumed = 0.0;
     private double carbohydrateConsumed = 0.0;
 
+    private boolean useK = false;
+
     private double kcalBurnt = 0.0;
-
-    public Day(){}
-
-    public void fillWithDataFrom(Goal goal){
-        if (goal.areManParamsInUse()){
-            this.kcalToEat = goal.getManKcal();
-            this.proteinToEat = goal.getManProtein();
-            this.fatToEat = goal.getManFat();
-            this.carbohydrateToEat = goal.getManCarbohydrate();
-        } else {
-            this.kcalToEat = goal.getAutoKcal();
-            this.proteinToEat = goal.getAutoProtein();
-            this.fatToEat = goal.getAutoFat();
-            this.carbohydrateToEat = goal.getAutoCarbohydrate();
-        }
-    }
+    private double proteinBurnt = 0.0;
+    private double fatBurnt = 0.0;
+    private double carbohydrateBurnt = 0.0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
+
+    public Day(){}
+
+    public void addMacroBurnt(double kcalBurnt, double proteinBurnt, double fatBurnt, double carbohydrateBurnt){
+        this.kcalBurnt += kcalBurnt;
+        this.proteinBurnt += proteinBurnt;
+        this.fatBurnt += fatBurnt;
+        this.carbohydrateBurnt += carbohydrateBurnt;
+    }
+
+    public void subtractMacroBurnt(double kcalBurnt, double proteinBurnt, double fatBurnt, double carbohydrateBurnt){
+        this.kcalBurnt -= kcalBurnt;
+        this.proteinBurnt -= proteinBurnt;
+        this.fatBurnt -= fatBurnt;
+        this.carbohydrateBurnt -= carbohydrateBurnt;
+    }
 
     public void addKcalBurntFromSport(Sport sport){
         this.kcalBurnt += sport.getKcalBurnt();
@@ -71,21 +76,10 @@ public class Day {
         this.carbohydrateConsumed -= food.getCarbohydrate();
     }
 
-
     public void removeMacroFromMeal(Meal meal){
         for(Food f : meal.getFoods()){
             removeMacroFromFood(f);
         }
-    }
-
-    public void createConnectionWithUser(User user){
-        this.user = user;
-        user.getDays().add(this);
-    }
-
-    public void removeConnectionWithUser(){
-        user.getDays().remove(this);
-        this.user = null;
     }
 
     public long getId() {
@@ -174,5 +168,55 @@ public class Day {
 
     public void setKcalBurnt(double kcalBurnt) {
         this.kcalBurnt = kcalBurnt;
+    }
+
+    public boolean isUseK() {
+        return useK;
+    }
+
+    public void setUseK(boolean useK) {
+        this.useK = useK;
+    }
+
+    public double getProteinBurnt() {
+        return proteinBurnt;
+    }
+
+    public void setProteinBurnt(double proteinBurnt) {
+        this.proteinBurnt = proteinBurnt;
+    }
+
+    public double getFatBurnt() {
+        return fatBurnt;
+    }
+
+    public void setFatBurnt(double fatBurnt) {
+        this.fatBurnt = fatBurnt;
+    }
+
+    public double getCarbohydrateBurnt() {
+        return carbohydrateBurnt;
+    }
+
+    public void setCarbohydrateBurnt(double carbohydrateBurnt) {
+        this.carbohydrateBurnt = carbohydrateBurnt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void createConnectionWithUser(User user){
+        this.user = user;
+        user.getDays().add(this);
+    }
+
+    public void removeConnectionWithUser(){
+        user.getDays().remove(this);
+        this.user = null;
     }
 }

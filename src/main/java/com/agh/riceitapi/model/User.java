@@ -52,7 +52,13 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonIgnore
-    private Goal goal;
+    private UserSettings userSettings;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore ManualParameters manualParameters;
 
     @OneToMany(
             mappedBy = "user",
@@ -149,12 +155,12 @@ public class User {
         this.userDetails = userDetails;
     }
 
-    public Goal getGoal() {
-        return goal;
+    public UserSettings getUserSettings() {
+        return userSettings;
     }
 
-    public void setGoal(Goal goal) {
-        this.goal = goal;
+    public void setUserSettings(UserSettings userSettings) {
+        this.userSettings = userSettings;
     }
 
     public List<Day> getDays() {
@@ -163,5 +169,13 @@ public class User {
 
     public void setDays(List<Day> days) {
         this.days = days;
+    }
+
+    public ManualParameters getManualParameters() {
+        return manualParameters;
+    }
+
+    public void setManualParameters(ManualParameters manualParameters) {
+        this.manualParameters = manualParameters;
     }
 }

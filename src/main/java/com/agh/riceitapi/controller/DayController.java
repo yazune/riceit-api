@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,18 @@ public class DayController {
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "getting a day", (elapsedTime/Math.pow(10,9))));
+
+        return new ResponseEntity(day, HttpStatus.OK);
+    }
+
+    @GetMapping("/day/getLastDay")
+    public ResponseEntity<Day> getLastDay(@CurrentUser UserPrincipal currentUser){
+        long startTime = System.nanoTime();
+
+        Day day = dayService.getLastDay(currentUser.getId());
+
+        long elapsedTime = System.nanoTime() - startTime;
+        log.info(format("%s in: %.10f [s]", "getting last day", (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity(day, HttpStatus.OK);
     }

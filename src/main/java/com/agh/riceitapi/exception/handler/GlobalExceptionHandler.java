@@ -105,6 +105,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ManualParametersNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleManualParametersNotFoundException(ManualParametersNotFoundException ex){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse errorResponse = new ErrorResponse("Manual parameters not found.", details);
+        log.warn(ex);
+        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserSettingsNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserSettingsNotFoundException(UserSettingsNotFoundException ex){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse errorResponse = new ErrorResponse("User settings not found.", details);
+        log.warn(ex);
+        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex){
         List<String> details = new ArrayList<>();
