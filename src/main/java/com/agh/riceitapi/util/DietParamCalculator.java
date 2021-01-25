@@ -28,7 +28,7 @@ public final class DietParamCalculator {
     public static double[] calculatePFC(double bmr){
         double prot = DecimalOperator.round((bmr * protPercentage / 100.0 / 4.0),2);
         double fat =  DecimalOperator.round((bmr * fatPercentage / 100.0 / 9.0), 2);
-        double carb = DecimalOperator.round(((bmr - (prot + fat)) / 4.0), 2);
+        double carb = DecimalOperator.round((bmr - carbPercentage / 100.0 / 4.0), 2);
 
         return new double[]{prot,fat,carb};
     }
