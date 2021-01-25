@@ -8,12 +8,15 @@ import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.repository.FoodRepository;
 import com.agh.riceitapi.repository.MealRepository;
 import com.agh.riceitapi.repository.UserRepository;
+import com.agh.riceitapi.util.DecimalOperator;
 import com.agh.riceitapi.validator.DateValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -71,11 +74,20 @@ public class MealService {
         if (meal.getUser().getId() != userId) throw new PermissionDeniedException("Permission denied.");
 
         Food food = new Food();
-        food.fillWithDataFrom(addFoodDTO);
+
+        double roundKcal = DecimalOperator.round(addFoodDTO.getKcal(),2);
+        double roundProt = DecimalOperator.round(addFoodDTO.getProtein(),2);
+        double roundFat = DecimalOperator.round(addFoodDTO.getFat(),2);
+        double roundCarb = DecimalOperator.round(addFoodDTO.getCarbohydrate(),2);
+
+        food.setName(addFoodDTO.getName());
+        food.setKcal(roundKcal);
+        food.setProtein(roundProt);
+        food.setFat(roundFat);
+        food.setCarbohydrate(roundCarb);
 
         meal.addFood(food);
         mealRepository.save(meal);
-
         dayService.addFood(userId, meal.getDate(), food);
     }
 
@@ -92,7 +104,13 @@ public class MealService {
         Food foodBeforeChanges = objectMapper.readValue(objectMapper.writeValueAsString(food), Food.class);
 
         meal.removeFood(food);
-        food.fillWithDataFrom(updateFoodDTO);
+
+        food.setName(updateFoodDTO.getName());
+        food.setKcal(DecimalOperator.round(updateFoodDTO.getKcal(),2));
+        food.setProtein(DecimalOperator.round(updateFoodDTO.getProtein(),2));
+        food.setFat(DecimalOperator.round(updateFoodDTO.getFat(),2));
+        food.setCarbohydrate(DecimalOperator.round(updateFoodDTO.getCarbohydrate(),2));
+
         meal.addFood(food);
         mealRepository.save(meal);
 
@@ -110,7 +128,6 @@ public class MealService {
 
         meal.removeFood(food);
         mealRepository.save(meal);
-
         dayService.removeFood(userId, meal.getDate(), food);
     }
 

@@ -1,11 +1,14 @@
 package com.agh.riceitapi.model;
 
 
+import com.agh.riceitapi.util.DecimalOperator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ public class Meal {
 
     private LocalDate date;
 
-    private double kcal = 0.0;
+    private double kcal = 0.00;
 
     private double carbohydrate = 0.0;
 
@@ -108,25 +111,37 @@ public class Meal {
         this.foods.add(food);
         food.setMeal(this);
 
-        this.kcal += food.getKcal();
-        this.carbohydrate += food.getCarbohydrate();
-        this.fat += food.getFat();
-        this.protein += food.getProtein();
+        double roundKcal = this.kcal + food.getKcal();
+        double roundProt = this.protein + food.getProtein();
+        double roundFat = this.fat + food.getFat();
+        double roundCarb = this.carbohydrate + food.getCarbohydrate();
+
+        this.kcal = DecimalOperator.round(roundKcal,2);
+        this.carbohydrate = DecimalOperator.round(roundCarb,2);
+        this.fat = DecimalOperator.round(roundFat,2);
+        this.protein = DecimalOperator.round(roundProt,2);
     }
+
     public void removeFood(Food food){
         this.foods.remove(food);
         food.setMeal(null);
 
-        this.kcal -= food.getKcal();
-        this.carbohydrate -= food.getCarbohydrate();
-        this.fat -= food.getFat();
-        this.protein -= food.getProtein();
+        double roundKcal = this.kcal - food.getKcal();
+        double roundProt = this.protein - food.getProtein();
+        double roundFat = this.fat - food.getFat();
+        double roundCarb = this.carbohydrate - food.getCarbohydrate();
+
+        this.kcal = DecimalOperator.round(roundKcal,2);
+        this.carbohydrate = DecimalOperator.round(roundCarb,2);
+        this.fat = DecimalOperator.round(roundFat,2);
+        this.protein = DecimalOperator.round(roundProt,2);
     }
 
     public void createConnectionWithUser(User user){
         this.setUser(user);
         user.getMeals().add(this);
     }
+
     public void removeConnectionWithUser(){
         this.user.getMeals().remove(this);
         this.setUser(null);

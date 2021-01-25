@@ -1,6 +1,7 @@
 package com.agh.riceitapi.model;
 
 
+import com.agh.riceitapi.util.DecimalOperator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -41,39 +42,51 @@ public class Day {
     public Day(){}
 
     public void addMacroBurnt(double kcalBurnt, double proteinBurnt, double fatBurnt, double carbohydrateBurnt){
-        this.kcalBurnt += kcalBurnt;
-        this.proteinBurnt += proteinBurnt;
-        this.fatBurnt += fatBurnt;
-        this.carbohydrateBurnt += carbohydrateBurnt;
+        double kcal =  this.kcalBurnt + kcalBurnt;
+        double protein = this.proteinBurnt + proteinBurnt;
+        double fat = this.fatBurnt + fatBurnt;
+        double carbohydrate = this.carbohydrateBurnt + carbohydrateBurnt;
+
+        this.kcalBurnt = DecimalOperator.round(kcal,2);
+        this.proteinBurnt = DecimalOperator.round(protein,2);
+        this.fatBurnt = DecimalOperator.round(fat,2);
+        this.carbohydrateBurnt = DecimalOperator.round(carbohydrate,2);
     }
 
     public void subtractMacroBurnt(double kcalBurnt, double proteinBurnt, double fatBurnt, double carbohydrateBurnt){
-        this.kcalBurnt -= kcalBurnt;
-        this.proteinBurnt -= proteinBurnt;
-        this.fatBurnt -= fatBurnt;
-        this.carbohydrateBurnt -= carbohydrateBurnt;
-    }
+        double kcal =  this.kcalBurnt - kcalBurnt;
+        double protein = this.proteinBurnt - proteinBurnt;
+        double fat = this.fatBurnt - fatBurnt;
+        double carbohydrate = this.carbohydrateBurnt - carbohydrateBurnt;
 
-    public void addKcalBurntFromSport(Sport sport){
-        this.kcalBurnt += sport.getKcalBurnt();
-    }
-
-    public void removeKcalBurntFromSport(Sport sport){
-        this.kcalBurnt -= sport.getKcalBurnt();
+        this.kcalBurnt = DecimalOperator.round(kcal,2);
+        this.proteinBurnt = DecimalOperator.round(protein,2);
+        this.fatBurnt = DecimalOperator.round(fat,2);
+        this.carbohydrateBurnt = DecimalOperator.round(carbohydrate,2);
     }
 
     public void addMacroFromFood(Food food){
-        this.kcalConsumed += food.getKcal();
-        this.proteinConsumed += food.getProtein();
-        this.fatConsumed += food.getFat();
-        this.carbohydrateConsumed += food.getCarbohydrate();
+        double kcal = this.kcalConsumed + food.getKcal();
+        double protein = this.proteinConsumed + food.getProtein();
+        double fat = this.fatConsumed + food.getFat();
+        double carbohydrate = this.carbohydrateConsumed + food.getCarbohydrate();
+
+        this.kcalConsumed = DecimalOperator.round(kcal,2);
+        this.proteinConsumed = DecimalOperator.round(protein,2);
+        this.fatConsumed = DecimalOperator.round(fat,2);
+        this.carbohydrateConsumed = DecimalOperator.round(carbohydrate,2);
     }
 
     public void removeMacroFromFood(Food food){
-        this.kcalConsumed -= food.getKcal();
-        this.proteinConsumed -= food.getProtein();
-        this.fatConsumed -= food.getFat();
-        this.carbohydrateConsumed -= food.getCarbohydrate();
+        double kcal = this.kcalConsumed - food.getKcal();
+        double protein = this.proteinConsumed - food.getProtein();
+        double fat = this.fatConsumed - food.getFat();
+        double carbohydrate = this.carbohydrateConsumed - food.getCarbohydrate();
+
+        this.kcalConsumed = DecimalOperator.round(kcal,2);
+        this.proteinConsumed = DecimalOperator.round(protein,2);
+        this.fatConsumed = DecimalOperator.round(fat,2);
+        this.carbohydrateConsumed = DecimalOperator.round(carbohydrate,2);
     }
 
     public void removeMacroFromMeal(Meal meal){

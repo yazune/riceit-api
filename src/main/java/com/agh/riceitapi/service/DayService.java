@@ -7,6 +7,7 @@ import com.agh.riceitapi.model.*;
 import com.agh.riceitapi.repository.DayRepository;
 import com.agh.riceitapi.repository.ManualParametersRepository;
 import com.agh.riceitapi.repository.UserRepository;
+import com.agh.riceitapi.util.DecimalOperator;
 import com.agh.riceitapi.util.DietParamCalculator;
 import com.agh.riceitapi.util.DietType;
 import com.agh.riceitapi.validator.DateValidator;
