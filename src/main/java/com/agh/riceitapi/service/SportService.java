@@ -30,40 +30,24 @@ public class SportService {
     @Autowired
     private DayService dayService;
 
-    public void addSportMan(long userId, AddSportManDTO addSportManDTO) throws UserNotFoundException{
+    public void addSport(long userId, AddSportDTO addSportDTO) throws UserNotFoundException{
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
 
         Sport sport = new Sport();
 
-        LocalDate date = DateValidator.parseStrToLocalDate(addSportManDTO.getDate());
+        LocalDate date = DateValidator.parseStrToLocalDate(addSportDTO.getDate());
         sport.setDate(date);
-        sport.setName(addSportManDTO.getName());
-        sport.setKcalBurnt(addSportManDTO.getKcalBurnt());
-        sport.setDuration(addSportManDTO.getDuration());
-        sport.setSportType(SportType.valueOf(addSportManDTO.getSportType()));
+        sport.setName(addSportDTO.getName());
+        sport.setDuration(addSportDTO.getDuration());
+        sport.setSportType(SportType.valueOf(addSportDTO.getSportType()));
 
-        sport.createConnectionWithUser(user);
-        sportRepository.save(sport);
-
-        dayService.addSport(userId, date, sport);
-    }
-
-    public void addSportAuto(long userId, AddSportAutoDTO addSportAutoDTO) throws UserNotFoundException{
-
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
-
-        Sport sport = new Sport();
-
-        LocalDate date = DateValidator.parseStrToLocalDate(addSportAutoDTO.getDate());
-        sport.setDate(date);
-        sport.setName(addSportAutoDTO.getName());
-        sport.setDuration(addSportAutoDTO.getDuration());
-        sport.setSportType(SportType.valueOf(addSportAutoDTO.getSportType()));
-
-        sport.calculateKcalBurnt(user.getUserDetails().getBmr(), user.getUserDetails().getWeight());
+        if (addSportDTO.getKcalBurnt() >= 0){
+            sport.setKcalBurnt(addSportDTO.getKcalBurnt());
+        } else {
+            sport.calculateKcalBurnt(user.getUserDetails().getBmr(), user.getUserDetails().getWeight());
+        }
 
         sport.createConnectionWithUser(user);
         sportRepository.save(sport);
@@ -87,7 +71,12 @@ public class SportService {
         sport.setName(updateSportDTO.getName());
         sport.setDuration(updateSportDTO.getDuration());
         sport.setSportType(SportType.valueOf(updateSportDTO.getSportType()));
-        sport.setKcalBurnt(updateSportDTO.getKcalBurnt());
+
+        if (updateSportDTO.getKcalBurnt() >= 0){
+            sport.setKcalBurnt(updateSportDTO.getKcalBurnt());
+        } else {
+            sport.calculateKcalBurnt(sport.getUser().getUserDetails().getBmr(), sport.getUser().getUserDetails().getWeight());
+        }
 
         sportRepository.save(sport);
 

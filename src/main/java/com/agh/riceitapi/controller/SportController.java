@@ -28,26 +28,20 @@ public class SportController {
 
     private final Log log = LogFactory.getLog(getClass());
 
-    @PostMapping("/sports/addMan")
-    public ResponseEntity<Sport> addSportMan(@CurrentUser UserPrincipal currentUser, @RequestBody AddSportManDTO addSportManDTO){
+    @PostMapping("/sports/add")
+    public ResponseEntity<Sport> addSport(@CurrentUser UserPrincipal currentUser, @RequestBody AddSportDTO addSportDTO){
         long startTime = System.nanoTime();
 
-        sportService.addSportMan(currentUser.getId(), addSportManDTO);
+        sportService.addSport(currentUser.getId(), addSportDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "adding new sport manually", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity("Sport added successfully.", HttpStatus.OK);
-    }
+        String str = "";
+        if (addSportDTO.getKcalBurnt() < 0){
+            str = "automatically";
+        } else str = "manually";
 
-    @PostMapping("/sports/addAuto")
-    public ResponseEntity<Sport> addSportAuto(@CurrentUser UserPrincipal currentUser, @RequestBody AddSportAutoDTO addSportAutoDTO){
-        long startTime = System.nanoTime();
-
-        sportService.addSportAuto(currentUser.getId(), addSportAutoDTO);
-
-        long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "adding new sport automatically", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "adding new sport " +str, (elapsedTime/Math.pow(10,9))));
 
         return new ResponseEntity("Sport added successfully.", HttpStatus.OK);
     }
