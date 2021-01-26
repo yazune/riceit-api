@@ -63,7 +63,7 @@ public class SportService {
         sport.setDuration(addSportAutoDTO.getDuration());
         sport.setSportType(SportType.valueOf(addSportAutoDTO.getSportType()));
 
-        sport.calculateKcalBurnt(user.getUserDetails().getWeight());
+        sport.calculateKcalBurnt(user.getUserDetails().getBmr(), user.getUserDetails().getWeight());
 
         sport.createConnectionWithUser(user);
         sportRepository.save(sport);

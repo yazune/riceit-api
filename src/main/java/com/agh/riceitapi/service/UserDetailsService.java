@@ -17,6 +17,7 @@ public class UserDetailsService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
+    @Autowired
     private DayService dayService;
 
     public void updateUserDetails(long userId, UserDetailsDTO userDetailsDTO) throws UserDetailsNotFoundException{

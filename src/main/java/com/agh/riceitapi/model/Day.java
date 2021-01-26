@@ -47,10 +47,10 @@ public class Day {
         double fat = this.fatBurnt + fatBurnt;
         double carbohydrate = this.carbohydrateBurnt + carbohydrateBurnt;
 
-        this.kcalBurnt = DecimalOperator.round(kcal,2);
-        this.proteinBurnt = DecimalOperator.round(protein,2);
-        this.fatBurnt = DecimalOperator.round(fat,2);
-        this.carbohydrateBurnt = DecimalOperator.round(carbohydrate,2);
+        this.kcalBurnt = DecimalOperator.round(kcal);
+        this.proteinBurnt = DecimalOperator.round(protein);
+        this.fatBurnt = DecimalOperator.round(fat);
+        this.carbohydrateBurnt = DecimalOperator.round(carbohydrate);
     }
 
     public void subtractMacroBurnt(double kcalBurnt, double proteinBurnt, double fatBurnt, double carbohydrateBurnt){
@@ -59,10 +59,10 @@ public class Day {
         double fat = this.fatBurnt - fatBurnt;
         double carbohydrate = this.carbohydrateBurnt - carbohydrateBurnt;
 
-        this.kcalBurnt = DecimalOperator.round(kcal,2);
-        this.proteinBurnt = DecimalOperator.round(protein,2);
-        this.fatBurnt = DecimalOperator.round(fat,2);
-        this.carbohydrateBurnt = DecimalOperator.round(carbohydrate,2);
+        this.kcalBurnt = DecimalOperator.round(kcal);
+        this.proteinBurnt = DecimalOperator.round(protein);
+        this.fatBurnt = DecimalOperator.round(fat);
+        this.carbohydrateBurnt = DecimalOperator.round(carbohydrate);
     }
 
     public void addMacroFromFood(Food food){
@@ -71,10 +71,10 @@ public class Day {
         double fat = this.fatConsumed + food.getFat();
         double carbohydrate = this.carbohydrateConsumed + food.getCarbohydrate();
 
-        this.kcalConsumed = DecimalOperator.round(kcal,2);
-        this.proteinConsumed = DecimalOperator.round(protein,2);
-        this.fatConsumed = DecimalOperator.round(fat,2);
-        this.carbohydrateConsumed = DecimalOperator.round(carbohydrate,2);
+        this.kcalConsumed = DecimalOperator.round(kcal);
+        this.proteinConsumed = DecimalOperator.round(protein);
+        this.fatConsumed = DecimalOperator.round(fat);
+        this.carbohydrateConsumed = DecimalOperator.round(carbohydrate);
     }
 
     public void removeMacroFromFood(Food food){
@@ -83,10 +83,10 @@ public class Day {
         double fat = this.fatConsumed - food.getFat();
         double carbohydrate = this.carbohydrateConsumed - food.getCarbohydrate();
 
-        this.kcalConsumed = DecimalOperator.round(kcal,2);
-        this.proteinConsumed = DecimalOperator.round(protein,2);
-        this.fatConsumed = DecimalOperator.round(fat,2);
-        this.carbohydrateConsumed = DecimalOperator.round(carbohydrate,2);
+        this.kcalConsumed = DecimalOperator.round(kcal);
+        this.proteinConsumed = DecimalOperator.round(protein);
+        this.fatConsumed = DecimalOperator.round(fat);
+        this.carbohydrateConsumed = DecimalOperator.round(carbohydrate);
     }
 
     public void removeMacroFromMeal(Meal meal){

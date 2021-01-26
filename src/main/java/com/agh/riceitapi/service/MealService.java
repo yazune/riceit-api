@@ -75,10 +75,10 @@ public class MealService {
 
         Food food = new Food();
 
-        double roundKcal = DecimalOperator.round(addFoodDTO.getKcal(),2);
-        double roundProt = DecimalOperator.round(addFoodDTO.getProtein(),2);
-        double roundFat = DecimalOperator.round(addFoodDTO.getFat(),2);
-        double roundCarb = DecimalOperator.round(addFoodDTO.getCarbohydrate(),2);
+        double roundKcal = DecimalOperator.round(addFoodDTO.getKcal());
+        double roundProt = DecimalOperator.round(addFoodDTO.getProtein());
+        double roundFat = DecimalOperator.round(addFoodDTO.getFat());
+        double roundCarb = DecimalOperator.round(addFoodDTO.getCarbohydrate());
 
         food.setName(addFoodDTO.getName());
         food.setKcal(roundKcal);
@@ -106,10 +106,10 @@ public class MealService {
         meal.removeFood(food);
 
         food.setName(updateFoodDTO.getName());
-        food.setKcal(DecimalOperator.round(updateFoodDTO.getKcal(),2));
-        food.setProtein(DecimalOperator.round(updateFoodDTO.getProtein(),2));
-        food.setFat(DecimalOperator.round(updateFoodDTO.getFat(),2));
-        food.setCarbohydrate(DecimalOperator.round(updateFoodDTO.getCarbohydrate(),2));
+        food.setKcal(DecimalOperator.round(updateFoodDTO.getKcal()));
+        food.setProtein(DecimalOperator.round(updateFoodDTO.getProtein()));
+        food.setFat(DecimalOperator.round(updateFoodDTO.getFat()));
+        food.setCarbohydrate(DecimalOperator.round(updateFoodDTO.getCarbohydrate()));
 
         meal.addFood(food);
         mealRepository.save(meal);

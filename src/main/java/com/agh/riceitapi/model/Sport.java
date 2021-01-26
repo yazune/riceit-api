@@ -1,6 +1,8 @@
 package com.agh.riceitapi.model;
 
 
+import com.agh.riceitapi.util.DecimalOperator;
+import com.agh.riceitapi.util.DietParamCalculator;
 import com.agh.riceitapi.util.SportConstants;
 import com.agh.riceitapi.util.SportType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,10 +35,12 @@ public class Sport {
 
     public Sport(){}
 
-    public void calculateKcalBurnt(double weight){
+    public void calculateKcalBurnt(double bmr, double weight){
         String type = sportType.name();
-        SportConstants ac = SportConstants.valueOf(type);
-        this.kcalBurnt = ac.burntPerKg * (duration/60) * weight;
+        SportConstants sc = SportConstants.valueOf(type);
+
+        double correctedMET = DietParamCalculator.calculateCorrectedMET(sc.MET, bmr, weight);
+        this.kcalBurnt = DecimalOperator.round(correctedMET * ((double)this.duration));
     }
 
     public int getDuration() {

@@ -116,10 +116,10 @@ public class Meal {
         double roundFat = this.fat + food.getFat();
         double roundCarb = this.carbohydrate + food.getCarbohydrate();
 
-        this.kcal = DecimalOperator.round(roundKcal,2);
-        this.carbohydrate = DecimalOperator.round(roundCarb,2);
-        this.fat = DecimalOperator.round(roundFat,2);
-        this.protein = DecimalOperator.round(roundProt,2);
+        this.kcal = DecimalOperator.round(roundKcal);
+        this.carbohydrate = DecimalOperator.round(roundCarb);
+        this.fat = DecimalOperator.round(roundFat);
+        this.protein = DecimalOperator.round(roundProt);
     }
 
     public void removeFood(Food food){
@@ -131,10 +131,10 @@ public class Meal {
         double roundFat = this.fat - food.getFat();
         double roundCarb = this.carbohydrate - food.getCarbohydrate();
 
-        this.kcal = DecimalOperator.round(roundKcal,2);
-        this.carbohydrate = DecimalOperator.round(roundCarb,2);
-        this.fat = DecimalOperator.round(roundFat,2);
-        this.protein = DecimalOperator.round(roundProt,2);
+        this.kcal = DecimalOperator.round(roundKcal);
+        this.carbohydrate = DecimalOperator.round(roundCarb);
+        this.fat = DecimalOperator.round(roundFat);
+        this.protein = DecimalOperator.round(roundProt);
     }
 
     public void createConnectionWithUser(User user){

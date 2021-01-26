@@ -1,6 +1,8 @@
 package com.agh.riceitapi.util;
 
 import com.agh.riceitapi.exception.InternalServerException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,21 +16,28 @@ public final class DietParamCalculator {
     public static double calculateBmr(double height, double weight, int age, Gender gender){
         double bmr;
 
+        double height_m, weight_m, age_m;
         if (gender.equals(Gender.MALE)){
-            bmr = 66.4730 + (13.7516 * weight) + (5.0033 * height) - (6.7750 * (double)age);
+            height_m = DecimalOperator.round(5.0033 * height);
+            weight_m = DecimalOperator.round(13.7516 * weight);
+            age_m = DecimalOperator.round(6.7750 * (double)age);
+            bmr = 66.4730 + weight_m + height_m - age_m;
+
         } else if (gender.equals(Gender.FEMALE)){
-            bmr = 665.0955 + (9.5634 * weight) + (1.8496 * height) - (4.6756 * (double)age);
+            height_m = DecimalOperator.round(1.8496 * height);
+            weight_m = DecimalOperator.round(9.5634 * weight);
+            age_m = DecimalOperator.round(4.6756 * (double)age);
+            bmr = 655.0955 + weight_m + height_m - age_m;
+
         } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!");
 
-        return DecimalOperator.round(bmr,2);
+        return DecimalOperator.round(bmr);
     }
 
-
-
     public static double[] calculatePFC(double bmr){
-        double prot = DecimalOperator.round((bmr * protPercentage / 100.0 / 4.0),2);
-        double fat =  DecimalOperator.round((bmr * fatPercentage / 100.0 / 9.0), 2);
-        double carb = DecimalOperator.round((bmr * carbPercentage / 100.0 / 4.0), 2);
+        double prot = DecimalOperator.round((bmr * protPercentage / 100.0 / 4.0));
+        double fat =  DecimalOperator.round((bmr * fatPercentage / 100.0 / 9.0));
+        double carb = DecimalOperator.round((bmr * carbPercentage / 100.0 / 4.0));
 
         return new double[]{prot,fat,carb};
     }
@@ -40,5 +49,14 @@ public final class DietParamCalculator {
         double[] macro = calculatePFC(bmr);
 
         return new double[]{bmr, macro[0], macro[1], macro[2]};
+    }
+
+    public static double calculateCorrectedMET(double MET, double bmr, double weight){
+
+        double bmrInL = DecimalOperator.round(bmr / 7200.0);
+        double bmrInMl = DecimalOperator.round(bmrInL * 1000.0 / weight);
+        double bmrModified = DecimalOperator.round(3.5 / bmrInMl);
+
+        return DecimalOperator.round(MET * bmrModified);
     }
 }
