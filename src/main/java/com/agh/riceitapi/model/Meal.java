@@ -111,30 +111,30 @@ public class Meal {
         this.foods.add(food);
         food.setMeal(this);
 
-        double roundKcal = this.kcal + food.getKcal();
-        double roundProt = this.protein + food.getProtein();
-        double roundFat = this.fat + food.getFat();
-        double roundCarb = this.carbohydrate + food.getCarbohydrate();
+        double sumKcal = this.kcal + food.getKcal();
+        double sumProt = this.protein + food.getProtein();
+        double sumFat = this.fat + food.getFat();
+        double sumCarb = this.carbohydrate + food.getCarbohydrate();
 
-        this.kcal = DecimalOperator.round(roundKcal);
-        this.carbohydrate = DecimalOperator.round(roundCarb);
-        this.fat = DecimalOperator.round(roundFat);
-        this.protein = DecimalOperator.round(roundProt);
+        this.kcal = DecimalOperator.round(sumKcal);
+        this.fat = DecimalOperator.round(sumFat);
+        this.protein = DecimalOperator.round(sumProt);
+        this.carbohydrate = DecimalOperator.round(sumCarb);
     }
 
     public void removeFood(Food food){
         this.foods.remove(food);
         food.setMeal(null);
 
-        double roundKcal = this.kcal - food.getKcal();
-        double roundProt = this.protein - food.getProtein();
-        double roundFat = this.fat - food.getFat();
-        double roundCarb = this.carbohydrate - food.getCarbohydrate();
+        double subKcal = this.kcal - food.getKcal();
+        double subProt = this.protein - food.getProtein();
+        double subFat = this.fat - food.getFat();
+        double subCarb = this.carbohydrate - food.getCarbohydrate();
 
-        this.kcal = DecimalOperator.round(roundKcal);
-        this.carbohydrate = DecimalOperator.round(roundCarb);
-        this.fat = DecimalOperator.round(roundFat);
-        this.protein = DecimalOperator.round(roundProt);
+        this.kcal = DecimalOperator.round(subKcal);
+        this.fat = DecimalOperator.round(subFat);
+        this.protein = DecimalOperator.round(subProt);
+        this.carbohydrate = DecimalOperator.round(subCarb);
     }
 
     public void createConnectionWithUser(User user){

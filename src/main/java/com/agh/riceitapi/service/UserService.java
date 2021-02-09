@@ -52,7 +52,7 @@ public class UserService {
         userDetails.setHeight(registerDTO.getHeight());
         userDetails.setWeight(registerDTO.getWeight());
         userDetails.setAge(registerDTO.getAge());
-        userDetails.setK(registerDTO.getK());
+        userDetails.setPal(registerDTO.getPal());
         userDetails.setGender(Gender.valueOf(registerDTO.getGender()));
 
         double bmr = DietParamCalculator.calculateBmr(
@@ -90,7 +90,7 @@ public class UserService {
     }
 
     //method for testing OnCascade DELETE
-    public void deleteUser(DeleteUserDTO deleteUserDTO){
-        userRepository.deleteById(deleteUserDTO.getUserId());
+    public void removeUser(Long userId){
+        userRepository.deleteById(userId);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static java.lang.String.format;
@@ -37,11 +38,11 @@ public class ManualParametersController {
         return new ResponseEntity(dto, HttpStatus.OK);
     }
 
-    @PostMapping("/manual")
-    private ResponseEntity<String> updateManualParameters(@CurrentUser UserPrincipal currentUser, @RequestBody ManualParametersDTO dto){
+    @PutMapping("/manual")
+    private ResponseEntity<String> updateManualParameters(@CurrentUser UserPrincipal currentUser, @RequestBody ManualParametersDTO manualParametersDTO){
         long startTime = System.nanoTime();
 
-        manualParametersService.updateManualParameters(currentUser.getId(), dto);
+        manualParametersService.updateManualParameters(currentUser.getId(), manualParametersDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "updating manual parameters", (elapsedTime/Math.pow(10,9))));

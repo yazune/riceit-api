@@ -1,6 +1,6 @@
 package com.agh.riceitapi.service;
 
-import com.agh.riceitapi.dto.GetUserDetailsDTO;
+import com.agh.riceitapi.dto.UserDetailsGetDTO;
 import com.agh.riceitapi.dto.UserDetailsDTO;
 import com.agh.riceitapi.exception.UserDetailsNotFoundException;
 import com.agh.riceitapi.model.UserDetails;
@@ -28,7 +28,7 @@ public class UserDetailsService {
         double weight = userDetailsDTO.getWeight();
         int age = userDetailsDTO.getAge();
         Gender gender = Gender.valueOf(userDetailsDTO.getGender());
-        double k = userDetailsDTO.getK();
+        double pal = userDetailsDTO.getPal();
 
         double bmr = DietParamCalculator.calculateBmr(height, weight, age, gender);
 
@@ -36,18 +36,18 @@ public class UserDetailsService {
         userDetails.setWeight(weight);
         userDetails.setAge(age);
         userDetails.setGender(gender);
-        userDetails.setK(k);
+        userDetails.setPal(pal);
         userDetails.setBmr(bmr);
 
         userDetailsRepository.save(userDetails);
         dayService.updateLastDay(userId);
     }
 
-    public GetUserDetailsDTO getUserDetails(UserPrincipal currentUser) throws UserDetailsNotFoundException{
+    public UserDetailsGetDTO getUserDetails(UserPrincipal currentUser) throws UserDetailsNotFoundException{
         UserDetails userDetails =  userDetailsRepository.findByUserId(currentUser.getId()).orElseThrow(
                 () -> new UserDetailsNotFoundException("There is no user details with id: [" + currentUser.getId() + "]."));
 
-        return new GetUserDetailsDTO(currentUser, userDetails);
+        return new UserDetailsGetDTO(currentUser, userDetails);
     }
 
 }

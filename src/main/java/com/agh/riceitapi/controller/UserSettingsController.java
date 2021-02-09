@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static java.lang.String.format;
@@ -27,7 +28,7 @@ public class UserSettingsController {
     private final Log log = LogFactory.getLog(getClass());
 
 
-    @GetMapping("/user/settings")
+    @GetMapping("/users/settings")
     public ResponseEntity<UserSettingsDTO> getUserSettings(@CurrentUser UserPrincipal currentUser){
         long startTime = System.nanoTime();
 
@@ -39,7 +40,7 @@ public class UserSettingsController {
         return new ResponseEntity(dto, HttpStatus.OK);
     }
 
-    @PostMapping("/user/settings")
+    @PutMapping("/users/settings")
     public ResponseEntity<String> updateUserSettings(@CurrentUser UserPrincipal currentUser, @RequestBody UserSettingsDTO dto){
         long startTime = System.nanoTime();
 

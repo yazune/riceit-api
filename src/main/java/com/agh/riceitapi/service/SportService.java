@@ -9,7 +9,7 @@ import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.util.SportType;
 import com.agh.riceitapi.repository.SportRepository;
 import com.agh.riceitapi.repository.UserRepository;
-import com.agh.riceitapi.validator.DateValidator;
+import com.agh.riceitapi.util.DateValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +30,21 @@ public class SportService {
     @Autowired
     private DayService dayService;
 
-    public void addSport(long userId, AddSportDTO addSportDTO) throws UserNotFoundException{
+    public void addSport(long userId, SportAddDTO sportAddDTO) throws UserNotFoundException{
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException("There is no user with id: [" + userId + "]."));
 
         Sport sport = new Sport();
 
-        LocalDate date = DateValidator.parseStrToLocalDate(addSportDTO.getDate());
+        LocalDate date = DateValidator.parseStrToLocalDate(sportAddDTO.getDate());
         sport.setDate(date);
-        sport.setName(addSportDTO.getName());
-        sport.setDuration(addSportDTO.getDuration());
-        sport.setSportType(SportType.valueOf(addSportDTO.getSportType()));
+        sport.setName(sportAddDTO.getName());
+        sport.setDuration(sportAddDTO.getDuration());
+        sport.setSportType(SportType.valueOf(sportAddDTO.getSportType()));
 
-        if (addSportDTO.getKcalBurnt() >= 0){
-            sport.setKcalBurnt(addSportDTO.getKcalBurnt());
+        if (sportAddDTO.getKcalBurnt() >= 0){
+            sport.setKcalBurnt(sportAddDTO.getKcalBurnt());
         } else {
             sport.calculateKcalBurnt(user.getUserDetails().getBmr(), user.getUserDetails().getWeight());
         }
@@ -55,10 +55,10 @@ public class SportService {
         dayService.addSport(userId, date, sport);
     }
 
-    public void updateSport(long userId, UpdateSportDTO updateSportDTO) throws SportNotFoundException, PermissionDeniedException, IOException {
+    public void updateSport(long userId, Long sportId, SportUpdateDTO sportUpdateDTO) throws SportNotFoundException, PermissionDeniedException, IOException {
 
-        Sport sport = sportRepository.findById(updateSportDTO.getSportId()).orElseThrow(
-                () -> new SportNotFoundException("There is no sport with id: [" + updateSportDTO.getSportId() + "]."));
+        Sport sport = sportRepository.findById(sportId).orElseThrow(
+                () -> new SportNotFoundException("There is no sport with id: [" + sportId + "]."));
 
         if (sport.getUser().getId() != userId){
             throw new PermissionDeniedException("Permission denied.");
@@ -68,12 +68,12 @@ public class SportService {
         objectMapper.registerModule(new JavaTimeModule());
         Sport sportBeforeChanges = objectMapper.readValue(objectMapper.writeValueAsString(sport), Sport.class);
 
-        sport.setName(updateSportDTO.getName());
-        sport.setDuration(updateSportDTO.getDuration());
-        sport.setSportType(SportType.valueOf(updateSportDTO.getSportType()));
+        sport.setName(sportUpdateDTO.getName());
+        sport.setDuration(sportUpdateDTO.getDuration());
+        sport.setSportType(SportType.valueOf(sportUpdateDTO.getSportType()));
 
-        if (updateSportDTO.getKcalBurnt() >= 0){
-            sport.setKcalBurnt(updateSportDTO.getKcalBurnt());
+        if (sportUpdateDTO.getKcalBurnt() >= 0){
+            sport.setKcalBurnt(sportUpdateDTO.getKcalBurnt());
         } else {
             sport.calculateKcalBurnt(sport.getUser().getUserDetails().getBmr(), sport.getUser().getUserDetails().getWeight());
         }
@@ -83,9 +83,9 @@ public class SportService {
         dayService.updateSport(userId, sport.getDate(), sportBeforeChanges, sport);
     }
 
-    public void removeSport(long userId, RemoveSportDTO removeSportDTO) throws SportNotFoundException, PermissionDeniedException{
-        Sport sport = sportRepository.findById(removeSportDTO.getSportId()).orElseThrow(
-                () -> new SportNotFoundException("There is no sport with id: [" + removeSportDTO.getSportId() + "]."));
+    public void removeSport(long userId, Long sportId) throws SportNotFoundException, PermissionDeniedException{
+        Sport sport = sportRepository.findById(sportId).orElseThrow(
+                () -> new SportNotFoundException("There is no sport with id: [" + sportId + "]."));
 
         if (sport.getUser().getId() != userId){
             throw new PermissionDeniedException("Permission denied.");
@@ -97,9 +97,9 @@ public class SportService {
         dayService.removeSport(userId, sport.getDate(), sport);
     }
 
-    public Sport getSport(long userId, GetSportDTO getSportDTO) throws SportNotFoundException, PermissionDeniedException{
-        Sport sport = sportRepository.findById(getSportDTO.getSportId()).orElseThrow(
-                () -> new SportNotFoundException("There is no sport with id: [" + getSportDTO.getSportId() + "]."));
+    public Sport getSport(long userId, Long sportId) throws SportNotFoundException, PermissionDeniedException{
+        Sport sport = sportRepository.findById(sportId).orElseThrow(
+                () -> new SportNotFoundException("There is no sport with id: [" + sportId + "]."));
 
         if (sport.getUser().getId() != userId){
             throw new PermissionDeniedException("Permission denied.");
@@ -108,9 +108,9 @@ public class SportService {
         return sport;
     }
 
-    public AllSportsDTO showAllSports(long userId, DateDTO dateDTO){
+    public SportsDTO getSports(long userId, DateDTO dateDTO){
         LocalDate date = DateValidator.parseStrToLocalDate(dateDTO.getDate());
-        return new AllSportsDTO(sportRepository.findAllByUserIdAndDate(userId, date));
+        return new SportsDTO(sportRepository.findAllByUserIdAndDate(userId, date));
     }
 
 }

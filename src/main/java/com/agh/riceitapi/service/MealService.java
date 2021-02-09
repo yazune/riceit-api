@@ -9,14 +9,12 @@ import com.agh.riceitapi.repository.FoodRepository;
 import com.agh.riceitapi.repository.MealRepository;
 import com.agh.riceitapi.repository.UserRepository;
 import com.agh.riceitapi.util.DecimalOperator;
-import com.agh.riceitapi.validator.DateValidator;
+import com.agh.riceitapi.util.DateValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -49,15 +47,15 @@ public class MealService {
         mealRepository.save(meal);
     }
 
-    public AllMealsDTO showAllMeals(long userId, DateDTO dateDTO){
+    public MealsDTO getMeals(long userId, DateDTO dateDTO){
         LocalDate date = DateValidator.parseStrToLocalDate(dateDTO.getDate());
         List<Meal> meals = mealRepository.findAllByUserIdAndDate(userId, date);
-        return new AllMealsDTO(meals);
+        return new MealsDTO(meals);
     }
 
-    public void removeMeal(long userId, RemoveMealDTO removeMealDTO) throws MealNotFoundException, PermissionDeniedException{
-        Meal meal = mealRepository.findById(removeMealDTO.getMealId()).orElseThrow(
-                () -> new MealNotFoundException("There is no meal with id: [" + removeMealDTO.getMealId() + "]."));
+    public void removeMeal(long userId, Long mealId) throws MealNotFoundException, PermissionDeniedException{
+        Meal meal = mealRepository.findById(mealId).orElseThrow(
+                () -> new MealNotFoundException("There is no meal with id: [" + mealId + "]."));
 
         if (meal.getUser().getId() != userId) throw new PermissionDeniedException("Permission denied.");
 
@@ -67,7 +65,7 @@ public class MealService {
         dayService.removeMeal(userId, meal.getDate(), meal);
     }
 
-    public void addFood(long userId, AddFoodDTO addFoodDTO) throws MealNotFoundException, PermissionDeniedException{
+    public void addFood(long userId, FoodAddDTO addFoodDTO) throws MealNotFoundException, PermissionDeniedException{
         Meal meal = mealRepository.findById(addFoodDTO.getMealId()).orElseThrow(
                 () -> new MealNotFoundException("There is no meal with id: [" + addFoodDTO.getMealId() + "]."));
 
@@ -91,9 +89,9 @@ public class MealService {
         dayService.addFood(userId, meal.getDate(), food);
     }
 
-    public void updateFood(long userId, UpdateFoodDTO updateFoodDTO) throws FoodNotFoundException, PermissionDeniedException, IOException {
-        Food food = foodRepository.findById(updateFoodDTO.getFoodId()).orElseThrow(
-                () -> new FoodNotFoundException("There is no food with id: [" + updateFoodDTO.getFoodId() + "]."));
+    public void updateFood(long userId, Long foodId, FoodDTO foodDTO) throws FoodNotFoundException, PermissionDeniedException, IOException {
+        Food food = foodRepository.findById(foodId).orElseThrow(
+                () -> new FoodNotFoundException("There is no food with id: [" + foodId + "]."));
 
         Meal meal = food.getMeal();
         if (meal.getUser().getId() != userId){
@@ -105,11 +103,11 @@ public class MealService {
 
         meal.removeFood(food);
 
-        food.setName(updateFoodDTO.getName());
-        food.setKcal(DecimalOperator.round(updateFoodDTO.getKcal()));
-        food.setProtein(DecimalOperator.round(updateFoodDTO.getProtein()));
-        food.setFat(DecimalOperator.round(updateFoodDTO.getFat()));
-        food.setCarbohydrate(DecimalOperator.round(updateFoodDTO.getCarbohydrate()));
+        food.setName(foodDTO.getName());
+        food.setKcal(DecimalOperator.round(foodDTO.getKcal()));
+        food.setProtein(DecimalOperator.round(foodDTO.getProtein()));
+        food.setFat(DecimalOperator.round(foodDTO.getFat()));
+        food.setCarbohydrate(DecimalOperator.round(foodDTO.getCarbohydrate()));
 
         meal.addFood(food);
         mealRepository.save(meal);
@@ -117,9 +115,9 @@ public class MealService {
         dayService.updateFood(userId, meal.getDate(), foodBeforeChanges, food);
     }
 
-    public void removeFood(long userId, RemoveFoodDTO removeFoodDTO) throws FoodNotFoundException, PermissionDeniedException{
-        Food food = foodRepository.findById(removeFoodDTO.getFoodId()).orElseThrow(
-                () -> new FoodNotFoundException("There is no food with id: [" + removeFoodDTO.getFoodId() + "]."));
+    public void removeFood(long userId, Long foodId) throws FoodNotFoundException, PermissionDeniedException{
+        Food food = foodRepository.findById(foodId).orElseThrow(
+                () -> new FoodNotFoundException("There is no food with id: [" + foodId + "]."));
         Meal meal = food.getMeal();
 
         if (meal.getUser().getId() != userId){
@@ -131,18 +129,18 @@ public class MealService {
         dayService.removeFood(userId, meal.getDate(), food);
     }
 
-    public Food getFood(long userId, GetFoodDTO getFoodDTO) throws FoodNotFoundException, PermissionDeniedException{
-        Food food = foodRepository.findById(getFoodDTO.getFoodId()).orElseThrow(
-                () -> new FoodNotFoundException("There is no food with id: [" + getFoodDTO.getFoodId() + "]."));
+    public Food getFood(long userId, Long foodId) throws FoodNotFoundException, PermissionDeniedException{
+        Food food = foodRepository.findById(foodId).orElseThrow(
+                () -> new FoodNotFoundException("There is no food with id: [" + foodId + "]."));
 
         if (food.getMeal().getUser().getId() != userId){
             throw new PermissionDeniedException("Permission denied.");
         } else return food;
     }
 
-    public Meal getMeal(long userId, GetMealDTO getMealDTO) throws MealNotFoundException, PermissionDeniedException{
-        Meal meal = mealRepository.findById(getMealDTO.getMealId()).orElseThrow(
-                () -> new MealNotFoundException("There is no meal with id: [" + getMealDTO.getMealId() + "]."));
+    public Meal getMeal(long userId, Long mealId) throws MealNotFoundException, PermissionDeniedException{
+        Meal meal = mealRepository.findById(mealId).orElseThrow(
+                () -> new MealNotFoundException("There is no meal with id: [" + mealId + "]."));
 
         if (meal.getUser().getId() != userId){
             throw new PermissionDeniedException("Permission denied.");

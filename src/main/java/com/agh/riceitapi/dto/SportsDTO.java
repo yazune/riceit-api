@@ -5,11 +5,11 @@ import com.agh.riceitapi.model.Sport;
 
 import java.util.List;
 
-public class AllSportsDTO {
+public class SportsDTO {
 
     private List<Sport> sports;
 
-    public AllSportsDTO(List<Sport> sports) {
+    public SportsDTO(List<Sport> sports) {
         this.sports = sports;
     }
 

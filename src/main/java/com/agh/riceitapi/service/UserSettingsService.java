@@ -23,8 +23,8 @@ public class UserSettingsService {
                 () -> new UserSettingsNotFoundException("There is no settings for user with id: " +userId));
 
         return new UserSettingsDTO(
-                us.isUseK(),
-                us.isUseManParameters(),
+                us.isUsePal(),
+                us.isUseMan(),
                 us.getDietType().name()
         );
     }
@@ -33,8 +33,8 @@ public class UserSettingsService {
         UserSettings us = userSettingsRepository.findByUserId(userId).orElseThrow(
                 () -> new UserSettingsNotFoundException("There is no settings for user with id: " +userId));
 
-        us.setUseK(dto.isUseK());
-        us.setUseManParameters(dto.isUseManParameters());
+        us.setUsePal(dto.isUsePal());
+        us.setUseMan(dto.isUseMan());
         us.setDietType(DietType.valueOf(dto.getDietType()));
 
         userSettingsRepository.save(us);

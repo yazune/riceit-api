@@ -5,6 +5,10 @@ import com.agh.riceitapi.util.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user_details")
@@ -18,12 +22,13 @@ public class UserDetails {
 
     private double weight;
 
+    @NotNull
     private int age;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private double k;
+    private double pal;
 
     private double bmr;
 
@@ -71,12 +76,12 @@ public class UserDetails {
         this.gender = gender;
     }
 
-    public double getK() {
-        return k;
+    public double getPal() {
+        return pal;
     }
 
-    public void setK(double k) {
-        this.k = k;
+    public void setPal(double pal) {
+        this.pal = pal;
     }
 
     public User getUser() {

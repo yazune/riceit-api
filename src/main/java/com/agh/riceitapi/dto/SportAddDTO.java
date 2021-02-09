@@ -2,22 +2,22 @@ package com.agh.riceitapi.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class UpdateSportDTO {
+public class SportAddDTO {
 
     @NotBlank
-    private long sportId;
+    private String date;
 
     @NotBlank
     private String name;
+
+    @NotBlank
+    private double kcalBurnt;
 
     @NotBlank
     private int duration;
 
     @NotBlank
     private String sportType;
-
-    @NotBlank
-    private double kcalBurnt;
 
     public int getDuration() {
         return duration;
@@ -35,13 +35,15 @@ public class UpdateSportDTO {
         this.sportType = sportType;
     }
 
-
-    public long getSportId() {
-        return sportId;
+    public SportAddDTO() {
     }
 
-    public void setSportId(long sportId) {
-        this.sportId = sportId;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getName() {

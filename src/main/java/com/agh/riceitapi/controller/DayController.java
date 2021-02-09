@@ -30,7 +30,7 @@ public class DayController {
     private final Log log = LogFactory.getLog(getClass());
 
 
-    @PostMapping("/day/getDay")
+    @PostMapping("/days")
     public ResponseEntity<Day> getDay(@CurrentUser UserPrincipal currentUser, @RequestBody @Valid DateDTO dateDTO){
         long startTime = System.nanoTime();
 
@@ -42,7 +42,7 @@ public class DayController {
         return new ResponseEntity(day, HttpStatus.OK);
     }
 
-    @GetMapping("/day/getLastDay")
+    @GetMapping("/days/last")
     public ResponseEntity<Day> getLastDay(@CurrentUser UserPrincipal currentUser){
         long startTime = System.nanoTime();
 

@@ -2,7 +2,7 @@ package com.agh.riceitapi.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class RemoveMealDTO {
+public class FoodAddDTO extends FoodDTO{
 
     @NotBlank
     private long mealId;

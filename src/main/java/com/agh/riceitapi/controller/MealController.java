@@ -11,9 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -29,7 +27,7 @@ public class MealController {
 
     private final Log log = LogFactory.getLog(getClass());
 
-    @PostMapping("/meals/create")
+    @PostMapping("/meals")
     public ResponseEntity<String> createMeal(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody DateDTO dateDTO){
         long startTime = System.nanoTime();
 
@@ -41,23 +39,23 @@ public class MealController {
         return new ResponseEntity("Meal created succesfully.", HttpStatus.OK);
     }
 
-    @PostMapping("/meals/showAll")
-    public ResponseEntity<List<Meal>> showAllMeals(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
+    @PostMapping("/meals/all")
+    public ResponseEntity<List<Meal>> getMeals(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
         long startTime = System.nanoTime();
 
-        AllMealsDTO allMealsDTO = mealService.showAllMeals(currentUser.getId(), dateDTO);
+        MealsDTO mealsDTO = mealService.getMeals(currentUser.getId(), dateDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "showing all meals", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "getting all meals", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(allMealsDTO, HttpStatus.OK);
+        return new ResponseEntity(mealsDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/meals/remove")
-    public ResponseEntity<String> removeMeal(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveMealDTO removeMealDTO){
+    @DeleteMapping("/meals/{mealId}")
+    public ResponseEntity<String> removeMeal(@CurrentUser UserPrincipal currentUser, @PathVariable Long mealId){
         long startTime = System.nanoTime();
 
-        mealService.removeMeal(currentUser.getId(), removeMealDTO);
+        mealService.removeMeal(currentUser.getId(), mealId);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "removing meal", (elapsedTime/Math.pow(10,9))));
@@ -65,11 +63,11 @@ public class MealController {
         return new ResponseEntity("Meal removed successfully.", HttpStatus.OK);
     }
 
-    @PostMapping("/meals/get")
-    public ResponseEntity<Meal> getMeal(@CurrentUser UserPrincipal currentUser, @RequestBody GetMealDTO getMealDTO){
+    @GetMapping("/meals/{mealId}")
+    public ResponseEntity<Meal> getMeal(@CurrentUser UserPrincipal currentUser, @PathVariable Long mealId){
         long startTime = System.nanoTime();
 
-        Meal meal = mealService.getMeal(currentUser.getId(), getMealDTO);
+        Meal meal = mealService.getMeal(currentUser.getId(), mealId);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "getting meal", (elapsedTime/Math.pow(10,9))));
@@ -77,11 +75,11 @@ public class MealController {
         return new ResponseEntity(meal, HttpStatus.OK);
     }
 
-    @PostMapping("/meals/addFood")
-    public ResponseEntity<Meal> addFood(@CurrentUser UserPrincipal currentUser, @RequestBody AddFoodDTO addFoodDTO){
+    @PostMapping("/foods")
+    public ResponseEntity<Meal> addFood(@CurrentUser UserPrincipal currentUser, @RequestBody FoodAddDTO foodAddDTO){
         long startTime = System.nanoTime();
 
-        mealService.addFood(currentUser.getId(), addFoodDTO);
+        mealService.addFood(currentUser.getId(), foodAddDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "adding food", (elapsedTime/Math.pow(10,9))));
@@ -89,11 +87,11 @@ public class MealController {
         return new ResponseEntity("Food added successfully.", HttpStatus.OK);
     }
 
-    @PostMapping("/meals/removeFood")
-    public ResponseEntity<Meal> removeFood(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveFoodDTO removeFoodDTO){
+    @DeleteMapping("/foods/{foodId}")
+    public ResponseEntity<Meal> removeFood(@CurrentUser UserPrincipal currentUser, @PathVariable Long foodId){
         long startTime = System.nanoTime();
 
-        mealService.removeFood(currentUser.getId(), removeFoodDTO);
+        mealService.removeFood(currentUser.getId(), foodId);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "removing food", (elapsedTime/Math.pow(10,9))));
@@ -101,11 +99,11 @@ public class MealController {
         return new ResponseEntity("Food removed successfully.", HttpStatus.OK);
     }
 
-    @PostMapping("/meals/getFood")
-    public ResponseEntity<Food> getFood(@CurrentUser UserPrincipal currentUser, @RequestBody GetFoodDTO getFoodDTO) {
+    @GetMapping("/foods/{foodId}")
+    public ResponseEntity<Food> getFood(@CurrentUser UserPrincipal currentUser, @PathVariable Long foodId) {
         long startTime = System.nanoTime();
 
-        Food food = mealService.getFood(currentUser.getId(), getFoodDTO);
+        Food food = mealService.getFood(currentUser.getId(), foodId);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "getting food", (elapsedTime/Math.pow(10,9))));
@@ -113,11 +111,11 @@ public class MealController {
         return new ResponseEntity(food, HttpStatus.OK);
     }
 
-    @PostMapping("/meals/updateFood")
-    public ResponseEntity<Meal> updateFood(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateFoodDTO editFoodDTO) throws IOException {
+    @PutMapping("/foods/{foodId}")
+    public ResponseEntity<Meal> updateFood(@CurrentUser UserPrincipal currentUser, @PathVariable Long foodId, @RequestBody FoodDTO foodDTO) throws IOException {
         long startTime = System.nanoTime();
 
-        mealService.updateFood(currentUser.getId(), editFoodDTO);
+        mealService.updateFood(currentUser.getId(), foodId, foodDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "updating food", (elapsedTime/Math.pow(10,9))));

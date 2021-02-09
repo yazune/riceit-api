@@ -13,7 +13,7 @@ public class UserDetailsDTO {
 
     private int age;
 
-    private double k;
+    private double pal;
 
     public UserDetailsDTO(){}
 
@@ -49,11 +49,11 @@ public class UserDetailsDTO {
         this.age = age;
     }
 
-    public double getK() {
-        return k;
+    public double getPal() {
+        return pal;
     }
 
-    public void setK(double k) {
-        this.k = k;
+    public void setPal(double pal) {
+        this.pal = pal;
     }
 }

@@ -28,7 +28,7 @@ public class Day {
     private double fatConsumed = 0.0;
     private double carbohydrateConsumed = 0.0;
 
-    private boolean useK = false;
+    private boolean usePal = false;
 
     private double kcalBurnt = 0.0;
     private double proteinBurnt = 0.0;
@@ -183,12 +183,12 @@ public class Day {
         this.kcalBurnt = kcalBurnt;
     }
 
-    public boolean isUseK() {
-        return useK;
+    public boolean isUsePal() {
+        return usePal;
     }
 
-    public void setUseK(boolean useK) {
-        this.useK = useK;
+    public void setUsePal(boolean usePal) {
+        this.usePal = usePal;
     }
 
     public double getProteinBurnt() {

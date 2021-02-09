@@ -3,7 +3,7 @@ package com.agh.riceitapi.dto;
 import com.agh.riceitapi.model.UserDetails;
 import com.agh.riceitapi.security.UserPrincipal;
 
-public class GetUserDetailsDTO {
+public class UserDetailsGetDTO {
 
     private String username;
     private String email;
@@ -12,9 +12,9 @@ public class GetUserDetailsDTO {
     private double weight;
     private int age;
     private String gender;
-    private double k;
+    private double pal;
 
-    public GetUserDetailsDTO(UserPrincipal currentUser, UserDetails userDetails){
+    public UserDetailsGetDTO(UserPrincipal currentUser, UserDetails userDetails){
         this.username = currentUser.getUsername();
         this.email = currentUser.getEmail();
 
@@ -22,7 +22,7 @@ public class GetUserDetailsDTO {
         this.weight = userDetails.getWeight();
         this.age = userDetails.getAge();
         this.gender = userDetails.getGender().name();
-        this.k = userDetails.getK();
+        this.pal = userDetails.getPal();
     }
 
     public String getUsername() {
@@ -73,11 +73,11 @@ public class GetUserDetailsDTO {
         this.gender = gender;
     }
 
-    public double getK() {
-        return k;
+    public double getPal() {
+        return pal;
     }
 
-    public void setK(double k) {
-        this.k = k;
+    public void setPal(double pal) {
+        this.pal = pal;
     }
 }

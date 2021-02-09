@@ -5,11 +5,11 @@ import com.agh.riceitapi.model.Meal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllMealsDTO {
+public class MealsDTO {
 
     private List<Meal> meals;
 
-    public AllMealsDTO(List<Meal> meals) {
+    public MealsDTO(List<Meal> meals) {
         this.meals = meals;
     }
 

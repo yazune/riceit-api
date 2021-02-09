@@ -9,8 +9,8 @@ import java.math.RoundingMode;
 
 public final class DietParamCalculator {
 
-    private static double protPercentage = 15.0;
-    private static double fatPercentage = 30.0;
+    private static double protPercentage = 30.0;
+    private static double fatPercentage = 15.0;
     private static double carbPercentage = 55.0;
 
     public static double calculateBmr(double height, double weight, int age, Gender gender){
@@ -42,8 +42,8 @@ public final class DietParamCalculator {
         return new double[]{prot,fat,carb};
     }
 
-    public static double[] calculateMacro(double bmr, double k, double difference){
-        bmr *= k;
+    public static double[] calculateMacro(double bmr, double pal, double difference){
+        bmr *= pal;
         bmr += difference;
 
         double[] macro = calculatePFC(bmr);

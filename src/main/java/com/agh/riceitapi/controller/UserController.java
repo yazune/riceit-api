@@ -1,10 +1,7 @@
 package com.agh.riceitapi.controller;
 
 import com.agh.riceitapi.dto.*;
-import com.agh.riceitapi.exception.EmailAlreadyExistsException;
 import com.agh.riceitapi.exception.RegisterException;
-import com.agh.riceitapi.exception.UserAlreadyExistsException;
-import com.agh.riceitapi.model.User;
 import com.agh.riceitapi.service.UserService;
 
 import org.apache.commons.logging.Log;
@@ -37,10 +34,10 @@ public class UserController {
        return new ResponseEntity(usernameDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/user/delete")
-    public ResponseEntity deleteUser(@RequestBody DeleteUserDTO deleteUserDTO){
-        userService.deleteUser(deleteUserDTO);
-        return ResponseEntity.ok("Deleted!");
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity removeUser(@PathVariable Long userId){
+        userService.removeUser(userId);
+        return ResponseEntity.ok("User has been successfully removed!");
     }
 
     @PostMapping("/existsByUsername")

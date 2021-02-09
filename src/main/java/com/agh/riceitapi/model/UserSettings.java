@@ -13,9 +13,9 @@ public class UserSettings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private boolean useK = false;
+    private boolean usePal = false;
 
-    private boolean useManParameters = false;
+    private boolean useMan = false;
 
     @Enumerated(EnumType.STRING)
     private DietType dietType = DietType.MAINTAINING;
@@ -32,20 +32,20 @@ public class UserSettings {
         this.id = id;
     }
 
-    public boolean isUseK() {
-        return useK;
+    public boolean isUsePal() {
+        return usePal;
     }
 
-    public void setUseK(boolean useK) {
-        this.useK = useK;
+    public void setUsePal(boolean usePal) {
+        this.usePal = usePal;
     }
 
-    public boolean isUseManParameters() {
-        return useManParameters;
+    public boolean isUseMan() {
+        return useMan;
     }
 
-    public void setUseManParameters(boolean useManParameters) {
-        this.useManParameters = useManParameters;
+    public void setUseMan(boolean useMan) {
+        this.useMan = useMan;
     }
 
     public DietType getDietType() {

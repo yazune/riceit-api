@@ -1,4 +1,4 @@
-package com.agh.riceitapi.validator;
+package com.agh.riceitapi.util;
 
 import com.agh.riceitapi.exception.WrongDateFormatException;
 

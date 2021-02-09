@@ -11,9 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,16 +26,16 @@ public class SportController {
 
     private final Log log = LogFactory.getLog(getClass());
 
-    @PostMapping("/sports/add")
-    public ResponseEntity<Sport> addSport(@CurrentUser UserPrincipal currentUser, @RequestBody AddSportDTO addSportDTO){
+    @PostMapping("/sports")
+    public ResponseEntity<Sport> addSport(@CurrentUser UserPrincipal currentUser, @RequestBody SportAddDTO sportAddDTO){
         long startTime = System.nanoTime();
 
-        sportService.addSport(currentUser.getId(), addSportDTO);
+        sportService.addSport(currentUser.getId(), sportAddDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
 
         String str = "";
-        if (addSportDTO.getKcalBurnt() < 0){
+        if (sportAddDTO.getKcalBurnt() < 0){
             str = "automatically";
         } else str = "manually";
 
@@ -46,11 +44,11 @@ public class SportController {
         return new ResponseEntity("Sport added successfully.", HttpStatus.OK);
     }
 
-    @PostMapping("/sports/remove")
-    public ResponseEntity<String> removeSport(@CurrentUser UserPrincipal currentUser, @RequestBody RemoveSportDTO removeSportDTO){
+    @DeleteMapping("/sports/{sportId}")
+    public ResponseEntity<String> removeSport(@CurrentUser UserPrincipal currentUser, @PathVariable Long sportId){
         long startTime = System.nanoTime();
 
-        sportService.removeSport(currentUser.getId(), removeSportDTO);
+        sportService.removeSport(currentUser.getId(), sportId);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "removing sport", (elapsedTime/Math.pow(10,9))));
@@ -58,11 +56,11 @@ public class SportController {
         return new ResponseEntity("Sport successfully removed.", HttpStatus.OK);
     }
 
-    @PostMapping("/sports/update")
-    public ResponseEntity<Sport> updateSport(@CurrentUser UserPrincipal currentUser, @RequestBody UpdateSportDTO updateSportDTO) throws IOException {
+    @PutMapping("/sports/{sportId}")
+    public ResponseEntity<Sport> updateSport(@CurrentUser UserPrincipal currentUser, @PathVariable Long sportId, @RequestBody SportUpdateDTO sportUpdateDTO) throws IOException {
         long startTime = System.nanoTime();
 
-        sportService.updateSport(currentUser.getId(), updateSportDTO);
+        sportService.updateSport(currentUser.getId(), sportId, sportUpdateDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "updating sport", (elapsedTime/Math.pow(10,9))));
@@ -70,23 +68,23 @@ public class SportController {
         return new ResponseEntity("Sport updated successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/sports/showAll")
-    public ResponseEntity<List<Sport>> showAllSports(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
+    @PostMapping("/sports/all")
+    public ResponseEntity<List<Sport>> getSports(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
         long startTime = System.nanoTime();
 
-        AllSportsDTO allSportsDTO = sportService.showAllSports(currentUser.getId(), dateDTO);
+        SportsDTO sportsDTO = sportService.getSports(currentUser.getId(), dateDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
-        log.info(format("%s in: %.10f [s]", "showing all sports", (elapsedTime/Math.pow(10,9))));
+        log.info(format("%s in: %.10f [s]", "getting all sports", (elapsedTime/Math.pow(10,9))));
 
-        return new ResponseEntity(allSportsDTO, HttpStatus.OK);
+        return new ResponseEntity(sportsDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/sports/get")
-    public ResponseEntity<Sport> getSport(@CurrentUser UserPrincipal currentUser, @RequestBody GetSportDTO getSportDTO){
+    @GetMapping("/sports/{sportId}")
+    public ResponseEntity<Sport> getSport(@CurrentUser UserPrincipal currentUser, @PathVariable Long sportId){
         long startTime = System.nanoTime();
 
-        Sport sport = sportService.getSport(currentUser.getId(), getSportDTO);
+        Sport sport = sportService.getSport(currentUser.getId(), sportId);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "getting sport", (elapsedTime/Math.pow(10,9))));

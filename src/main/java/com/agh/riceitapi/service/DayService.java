@@ -5,12 +5,10 @@ import com.agh.riceitapi.exception.DayNotFoundException;
 import com.agh.riceitapi.exception.UserNotFoundException;
 import com.agh.riceitapi.model.*;
 import com.agh.riceitapi.repository.DayRepository;
-import com.agh.riceitapi.repository.ManualParametersRepository;
 import com.agh.riceitapi.repository.UserRepository;
-import com.agh.riceitapi.util.DecimalOperator;
 import com.agh.riceitapi.util.DietParamCalculator;
 import com.agh.riceitapi.util.DietType;
-import com.agh.riceitapi.validator.DateValidator;
+import com.agh.riceitapi.util.DateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +42,7 @@ public class DayService {
         UserSettings settings = user.getUserSettings();
         Day day = new Day();
 
-        if (settings.isUseManParameters()){
+        if (settings.isUseMan()){
             ManualParameters mp = user.getManualParameters();
             day.setKcalToEat(mp.getManKcal());
             day.setProteinToEat(mp.getManProtein());
@@ -52,10 +50,10 @@ public class DayService {
             day.setCarbohydrateToEat(mp.getManCarbohydrate());
         } else {
             UserDetails details = user.getUserDetails();
-            double k;
-            if (settings.isUseK()){
-                k = details.getK();
-            } else k = 1.0;
+            double pal;
+            if (settings.isUsePal()){
+                pal = details.getPal();
+            } else pal = 1.0;
 
             double difference;
             if(settings.getDietType().equals(DietType.GAIN)){
@@ -64,13 +62,13 @@ public class DayService {
                 difference = -500.0;
             } else difference = 0.0;
 
-            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), k, difference);
+            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, difference);
 
             day.setKcalToEat(array[0]);
             day.setProteinToEat(array[1]);
             day.setFatToEat(array[2]);
             day.setCarbohydrateToEat(array[3]);
-            day.setUseK(settings.isUseK());
+            day.setUsePal(settings.isUsePal());
         }
         day.setDate(date);
         day.createConnectionWithUser(user);
@@ -85,7 +83,7 @@ public class DayService {
         User user = day.getUser();
         UserSettings settings = user.getUserSettings();
 
-        if (settings.isUseManParameters()){
+        if (settings.isUseMan()){
             ManualParameters mp = user.getManualParameters();
             day.setKcalToEat(mp.getManKcal());
             day.setProteinToEat(mp.getManProtein());
@@ -93,10 +91,10 @@ public class DayService {
             day.setCarbohydrateToEat(mp.getManCarbohydrate());
         } else {
             UserDetails details = user.getUserDetails();
-            double k;
-            if (settings.isUseK()){
-                k = details.getK();
-            } else k = 1.0;
+            double pal;
+            if (settings.isUsePal()){
+                pal = details.getPal();
+            } else pal = 1.0;
 
             double difference;
             if(settings.getDietType().equals(DietType.GAIN)){
@@ -105,13 +103,13 @@ public class DayService {
                 difference = -500.0;
             } else difference = 0.0;
 
-            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), k, difference);
+            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, difference);
 
             day.setKcalToEat(array[0]);
             day.setProteinToEat(array[1]);
             day.setFatToEat(array[2]);
             day.setCarbohydrateToEat(array[3]);
-            day.setUseK(settings.isUseK());
+            day.setUsePal(settings.isUsePal());
         }
 
         dayRepository.save(day);
