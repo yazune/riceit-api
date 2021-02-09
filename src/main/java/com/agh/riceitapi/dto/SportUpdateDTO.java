@@ -5,9 +5,6 @@ import javax.validation.constraints.NotBlank;
 public class SportUpdateDTO {
 
     @NotBlank
-    private long sportId;
-
-    @NotBlank
     private String name;
 
     @NotBlank
@@ -33,14 +30,6 @@ public class SportUpdateDTO {
 
     public void setSportType(String sportType) {
         this.sportType = sportType;
-    }
-
-    public long getSportId() {
-        return sportId;
-    }
-
-    public void setSportId(long sportId) {
-        this.sportId = sportId;
     }
 
     public String getName() {

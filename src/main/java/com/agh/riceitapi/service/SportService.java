@@ -6,6 +6,8 @@ import com.agh.riceitapi.exception.PermissionDeniedException;
 import com.agh.riceitapi.exception.UserNotFoundException;
 import com.agh.riceitapi.model.Sport;
 import com.agh.riceitapi.model.User;
+import com.agh.riceitapi.util.DietParamCalculator;
+import com.agh.riceitapi.util.SportConstants;
 import com.agh.riceitapi.util.SportType;
 import com.agh.riceitapi.repository.SportRepository;
 import com.agh.riceitapi.repository.UserRepository;
@@ -46,7 +48,13 @@ public class SportService {
         if (sportAddDTO.getKcalBurnt() >= 0){
             sport.setKcalBurnt(sportAddDTO.getKcalBurnt());
         } else {
-            sport.calculateKcalBurnt(user.getUserDetails().getBmr(), user.getUserDetails().getWeight());
+            SportConstants sc = SportConstants.valueOf(sport.getSportType().name());
+            double kcalBurnt = DietParamCalculator.calculateKcalBurnt(
+                    sc.MET,
+                    user.getUserDetails().getBmr(),
+                    user.getUserDetails().getWeight(),
+                    sportAddDTO.getDuration());
+            sport.setKcalBurnt(kcalBurnt);
         }
 
         sport.createConnectionWithUser(user);
@@ -60,7 +68,9 @@ public class SportService {
         Sport sport = sportRepository.findById(sportId).orElseThrow(
                 () -> new SportNotFoundException("There is no sport with id: [" + sportId + "]."));
 
-        if (sport.getUser().getId() != userId){
+        User user = sport.getUser();
+
+        if (user.getId() != userId){
             throw new PermissionDeniedException("Permission denied.");
         }
 
@@ -75,11 +85,16 @@ public class SportService {
         if (sportUpdateDTO.getKcalBurnt() >= 0){
             sport.setKcalBurnt(sportUpdateDTO.getKcalBurnt());
         } else {
-            sport.calculateKcalBurnt(sport.getUser().getUserDetails().getBmr(), sport.getUser().getUserDetails().getWeight());
+            SportConstants sc = SportConstants.valueOf(sport.getSportType().name());
+            double kcalBurnt = DietParamCalculator.calculateKcalBurnt(
+                    sc.MET,
+                    user.getUserDetails().getBmr(),
+                    user.getUserDetails().getWeight(),
+                    sportUpdateDTO.getDuration());
+            sport.setKcalBurnt(kcalBurnt);
         }
 
         sportRepository.save(sport);
-
         dayService.updateSport(userId, sport.getDate(), sportBeforeChanges, sport);
     }
 

@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface ManualParametersRepository extends JpaRepository<ManualParameters, Long> {
 
     Optional<ManualParameters> findByUserId(Long userId);
-
 }

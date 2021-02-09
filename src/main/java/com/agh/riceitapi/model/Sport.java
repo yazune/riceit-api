@@ -35,14 +35,6 @@ public class Sport {
 
     public Sport(){}
 
-    public void calculateKcalBurnt(double bmr, double weight){
-        String type = sportType.name();
-        SportConstants sc = SportConstants.valueOf(type);
-
-        double correctedMET = DietParamCalculator.calculateCorrectedMET(sc.MET, bmr, weight);
-        this.kcalBurnt = DecimalOperator.round(correctedMET * ((double)this.duration));
-    }
-
     public int getDuration() {
         return duration;
     }
