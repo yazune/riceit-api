@@ -53,7 +53,15 @@ public final class DietParamCalculator {
         return new double[]{prot,fat,carb};
     }
 
-    public static double[] calculateMacro(double bmr, double pal, double difference){
+    public static double[] calculateMacro(double bmr, double pal, DietType dietType){
+
+        double difference;
+        if(dietType.equals(DietType.GAIN)){
+            difference = 500.0;
+        } else if(dietType.equals(DietType.REDUCTION)){
+            difference = -500.0;
+        } else difference = 0.0;
+
         bmr *= pal;
         bmr += difference;
 

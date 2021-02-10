@@ -50,19 +50,13 @@ public class DayService {
             day.setCarbohydrateToEat(mp.getManCarbohydrate());
         } else {
             UserDetails details = user.getUserDetails();
+
             double pal;
             if (settings.isUsePal()){
                 pal = details.getPal();
             } else pal = 1.0;
 
-            double difference;
-            if(settings.getDietType().equals(DietType.GAIN)){
-                difference = 500.0;
-            } else if(settings.getDietType().equals(DietType.REDUCTION)){
-                difference = -500.0;
-            } else difference = 0.0;
-
-            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, difference);
+            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, settings.getDietType());
 
             day.setKcalToEat(array[0]);
             day.setProteinToEat(array[1]);
@@ -96,14 +90,7 @@ public class DayService {
                 pal = details.getPal();
             } else pal = 1.0;
 
-            double difference;
-            if(settings.getDietType().equals(DietType.GAIN)){
-                difference = 500.0;
-            } else if(settings.getDietType().equals(DietType.REDUCTION)){
-                difference = -500.0;
-            } else difference = 0.0;
-
-            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, difference);
+            double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, settings.getDietType());
 
             day.setKcalToEat(array[0]);
             day.setProteinToEat(array[1]);
