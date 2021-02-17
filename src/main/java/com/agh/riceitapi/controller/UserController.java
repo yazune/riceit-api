@@ -35,12 +35,12 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity removeUser(@PathVariable Long userId){
+    public ResponseEntity<String> removeUser(@PathVariable Long userId){
         userService.removeUser(userId);
         return ResponseEntity.ok("User has been successfully removed!");
     }
 
-    @PostMapping("/existsByUsername")
+    @PostMapping("/auth/existsByUsername")
     public @ResponseBody ResponseEntity<BooleanDTO> existsByUsername(@Valid @RequestBody ExistsUsernameDTO existsUsernameDTO){
 
         long startTime = System.nanoTime();
@@ -52,7 +52,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/existsByEmail")
+    @PostMapping("/auth/existsByEmail")
     public @ResponseBody ResponseEntity<BooleanDTO> existsByEmail(@Valid @RequestBody ExistsEmailDTO existsEmailDTO){
 
         long startTime = System.nanoTime();

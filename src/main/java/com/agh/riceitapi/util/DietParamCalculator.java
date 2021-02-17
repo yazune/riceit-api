@@ -12,6 +12,7 @@ public final class DietParamCalculator {
     private static double protPercentage = 30.0;
     private static double fatPercentage = 15.0;
     private static double carbPercentage = 55.0;
+    private static double difference = 500.0;
 
     public static double calculateBmr(double height, double weight, int age, Gender gender){
         double bmr;
@@ -55,15 +56,12 @@ public final class DietParamCalculator {
 
     public static double[] calculateMacro(double bmr, double pal, DietType dietType){
 
-        double difference;
         if(dietType.equals(DietType.GAIN)){
-            difference = 500.0;
+            bmr += difference;
         } else if(dietType.equals(DietType.REDUCTION)){
-            difference = -500.0;
-        } else difference = 0.0;
-
+            bmr -= difference;
+        }
         bmr *= pal;
-        bmr += difference;
 
         double[] macro = calculatePFC(bmr);
 

@@ -76,7 +76,7 @@ public class MealController {
     }
 
     @PostMapping("/foods")
-    public ResponseEntity<Meal> addFood(@CurrentUser UserPrincipal currentUser, @RequestBody FoodAddDTO foodAddDTO){
+    public ResponseEntity<String> addFood(@CurrentUser UserPrincipal currentUser, @RequestBody FoodAddDTO foodAddDTO){
         long startTime = System.nanoTime();
 
         mealService.addFood(currentUser.getId(), foodAddDTO);
@@ -88,7 +88,7 @@ public class MealController {
     }
 
     @DeleteMapping("/foods/{foodId}")
-    public ResponseEntity<Meal> removeFood(@CurrentUser UserPrincipal currentUser, @PathVariable Long foodId){
+    public ResponseEntity<String> removeFood(@CurrentUser UserPrincipal currentUser, @PathVariable Long foodId){
         long startTime = System.nanoTime();
 
         mealService.removeFood(currentUser.getId(), foodId);

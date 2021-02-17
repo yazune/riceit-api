@@ -2,7 +2,7 @@ package com.agh.riceitapi.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class SportUpdateDTO {
+public class SportDTO {
 
     @NotBlank
     private String name;

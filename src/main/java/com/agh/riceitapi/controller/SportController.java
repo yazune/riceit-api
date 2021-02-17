@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 import static java.lang.String.format;
 
@@ -27,7 +26,7 @@ public class SportController {
     private final Log log = LogFactory.getLog(getClass());
 
     @PostMapping("/sports")
-    public ResponseEntity<Sport> addSport(@CurrentUser UserPrincipal currentUser, @RequestBody SportAddDTO sportAddDTO){
+    public ResponseEntity<String> addSport(@CurrentUser UserPrincipal currentUser, @RequestBody SportAddDTO sportAddDTO){
         long startTime = System.nanoTime();
 
         sportService.addSport(currentUser.getId(), sportAddDTO);
@@ -57,10 +56,10 @@ public class SportController {
     }
 
     @PutMapping("/sports/{sportId}")
-    public ResponseEntity<Sport> updateSport(@CurrentUser UserPrincipal currentUser, @PathVariable Long sportId, @RequestBody SportUpdateDTO sportUpdateDTO) throws IOException {
+    public ResponseEntity<String> updateSport(@CurrentUser UserPrincipal currentUser, @PathVariable Long sportId, @RequestBody SportDTO sportDTO) throws IOException {
         long startTime = System.nanoTime();
 
-        sportService.updateSport(currentUser.getId(), sportId, sportUpdateDTO);
+        sportService.updateSport(currentUser.getId(), sportId, sportDTO);
 
         long elapsedTime = System.nanoTime() - startTime;
         log.info(format("%s in: %.10f [s]", "updating sport", (elapsedTime/Math.pow(10,9))));
@@ -69,7 +68,7 @@ public class SportController {
     }
 
     @PostMapping("/sports/all")
-    public ResponseEntity<List<Sport>> getSports(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
+    public ResponseEntity<SportsDTO> getSports(@CurrentUser UserPrincipal currentUser, @RequestBody DateDTO dateDTO){
         long startTime = System.nanoTime();
 
         SportsDTO sportsDTO = sportService.getSports(currentUser.getId(), dateDTO);

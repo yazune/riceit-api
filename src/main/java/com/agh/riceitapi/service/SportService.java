@@ -63,7 +63,7 @@ public class SportService {
         dayService.addSport(userId, date, sport);
     }
 
-    public void updateSport(long userId, Long sportId, SportUpdateDTO sportUpdateDTO) throws SportNotFoundException, PermissionDeniedException, IOException {
+    public void updateSport(long userId, Long sportId, SportDTO sportDTO) throws SportNotFoundException, PermissionDeniedException, IOException {
 
         Sport sport = sportRepository.findById(sportId).orElseThrow(
                 () -> new SportNotFoundException("There is no sport with id: [" + sportId + "]."));
@@ -78,19 +78,19 @@ public class SportService {
         objectMapper.registerModule(new JavaTimeModule());
         Sport sportBeforeChanges = objectMapper.readValue(objectMapper.writeValueAsString(sport), Sport.class);
 
-        sport.setName(sportUpdateDTO.getName());
-        sport.setDuration(sportUpdateDTO.getDuration());
-        sport.setSportType(SportType.valueOf(sportUpdateDTO.getSportType()));
+        sport.setName(sportDTO.getName());
+        sport.setDuration(sportDTO.getDuration());
+        sport.setSportType(SportType.valueOf(sportDTO.getSportType()));
 
-        if (sportUpdateDTO.getKcalBurnt() >= 0){
-            sport.setKcalBurnt(sportUpdateDTO.getKcalBurnt());
+        if (sportDTO.getKcalBurnt() >= 0){
+            sport.setKcalBurnt(sportDTO.getKcalBurnt());
         } else {
             SportConstants sc = SportConstants.valueOf(sport.getSportType().name());
             double kcalBurnt = DietParamCalculator.calculateKcalBurnt(
                     sc.MET,
                     user.getUserDetails().getBmr(),
                     user.getUserDetails().getWeight(),
-                    sportUpdateDTO.getDuration());
+                    sportDTO.getDuration());
             sport.setKcalBurnt(kcalBurnt);
         }
 
