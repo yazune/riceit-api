@@ -18,7 +18,7 @@ public final class DietParamCalculator {
         double bmr;
         double height_m, weight_m, age_m;
 
-        /* Harris-Benedict method
+         // Harris-Benedict method
         if (gender.equals(Gender.MALE)){
             height_m = DecimalOperator.round(5.0033 * height);
             weight_m = DecimalOperator.round(13.7516 * weight);
@@ -30,18 +30,18 @@ public final class DietParamCalculator {
             weight_m = DecimalOperator.round(9.5634 * weight);
             age_m = DecimalOperator.round(4.6756 * (double)age);
             bmr = 655.0955 + weight_m + height_m - age_m;
-        } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!"); */
+        } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!");
 
         // Mifflin - St Jeor method
-        weight_m = DecimalOperator.round(10.0 * weight);
-        height_m = DecimalOperator.round(6.25 * height);
-        age_m = DecimalOperator.round (5.0 * age);
-
-        if (gender.equals(Gender.MALE)){
-            bmr = weight_m + height_m - age_m + 5.0;
-        } else if (gender.equals(Gender.FEMALE)){
-            bmr = weight_m + height_m - age_m - 161.0;
-        } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!");
+//        weight_m = DecimalOperator.round(10.0 * weight);
+//        height_m = DecimalOperator.round(6.25 * height);
+//        age_m = DecimalOperator.round (5.0 * age);
+//
+//        if (gender.equals(Gender.MALE)){
+//            bmr = weight_m + height_m - age_m + 5.0;
+//        } else if (gender.equals(Gender.FEMALE)){
+//            bmr = weight_m + height_m - age_m - 161.0;
+//        } else throw new InternalServerException("Goal.calculateParameters: wrong Gender format!");
 
         return DecimalOperator.round(bmr);
     }
