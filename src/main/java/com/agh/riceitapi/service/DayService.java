@@ -54,7 +54,7 @@ public class DayService {
             double pal;
             if (settings.isUsePal()){
                 pal = details.getPal();
-            } else pal = 1.0;
+            } else pal = 1.2;
 
             double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, settings.getDietType());
 
@@ -88,7 +88,7 @@ public class DayService {
             double pal;
             if (settings.isUsePal()){
                 pal = details.getPal();
-            } else pal = 1.0;
+            } else pal = 1.2;
 
             double[] array = DietParamCalculator.calculateMacro(details.getBmr(), pal, settings.getDietType());
 
